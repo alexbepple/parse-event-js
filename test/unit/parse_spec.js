@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var q = require('parse');
 
-describe('QuickCalifier', function() {
+describe('Date parser', function() {
     describe('expands abbreviations', function() {
         it('today', function() {
             expect(q.expandAbbreviations('tod')).to.contain('today');
