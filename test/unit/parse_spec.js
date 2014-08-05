@@ -41,17 +41,8 @@ describe('QuickCalifier', function() {
         it('that can be uppercase', function() {
             expect(q.containsMonth('Feb')).to.be.true;
         });
-        it('which cannot be a number', function() {
+        it('not as a number', function() {
             expect(q.containsMonth('3')).to.be.false;
-        });
-    });
-
-    describe('assumes times to be in 24-h format', function() {
-        it('and prepends 0 to h:mm times', function() {
-            expect(q.disambiguateTimes('1:00')).to.equal('01:00');
-        });
-        it('and leaves unambiguous times alone', function() {
-            expect(q.disambiguateTimes('01:00')).to.equal('01:00');
         });
     });
 });

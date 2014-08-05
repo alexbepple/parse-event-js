@@ -47,46 +47,19 @@ var noOfTokensThatContainDate = function (tokens) {
     return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
 };
 
-var noOfTokensForEnd = function (tokens) {
-	if (tokens[0] === 'to') {
-		return 1 + noOfTokensThatContainDate(tokens.from(1));
-	}
-    return 0;
-};
-var noOfTokensForDuration = function (tokens) {
-    var duration = (/\d( )?(d|h|min)/).exec(join(tokens.first(2)));
-    if (duration) {
-        var occurrencesOfSpace = duration[0].match(/ /) ? 1 : 0;
-		return 1 + occurrencesOfSpace;
-    }
-    return 0;
-};
-
-var parse = function (input, reference) {
-    if (_.isUndefined(reference)) reference = Date.create();
-
+var parse = function (input) {
     var tokens = split(input);
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
-
-	var tokensAfterStart = tokens.from(noOfTokensForStart);
-	var noOfTokensBeforeTitle = noOfTokensForStart 
-        + noOfTokensForEnd(tokensAfterStart) 
-        + noOfTokensForDuration(tokensAfterStart);
-
 	var start = Date.create(join(tokens.first(noOfTokensForStart)));
     return {
-        title: join(tokens.from(noOfTokensBeforeTitle)),
+        title: join(tokens.from(noOfTokensForStart)),
         start: start.format('{yyyy}-{MM}-{dd} {HH}:{mm}')
     };
 };
 
-var disambiguateTimes = function (input) {
-    return input.replace(/\b(\d:\d\d)/, '0$1');
-};
-
 var preprocessThenParse = function (input) {
     return _.compose(
-        parse, addMonthIfNecessary, expandAbbreviations, disambiguateTimes
+        parse, addMonthIfNecessary, expandAbbreviations
     ).call(this, input);
 };
 
@@ -98,8 +71,5 @@ exports = Object.merge(exports, {
 
     expandAbbreviations: expandAbbreviations,
     parse: preprocessThenParse,
-    disambiguateTimes: disambiguateTimes,
-
-    noOfTokensForDuration: noOfTokensForDuration,
 });
 
