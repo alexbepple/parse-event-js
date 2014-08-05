@@ -51,6 +51,10 @@ var createDate = function (dateSpec) {
 	return Date.future(dateSpec);
 };
 
+var disambiguateTimes = function (input) {
+    return input.replace(/(\d{1,2})(\d{2})/, '$1:$2');
+};
+
 var parse = function (input) {
     var tokens = split(input);
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
@@ -63,11 +67,13 @@ var parse = function (input) {
 
 var preprocessThenParse = function (input) {
     return _.compose(
-        parse, addMonthIfNecessary, expandAbbreviations
+        parse, addMonthIfNecessary, expandAbbreviations, disambiguateTimes
     ).call(this, input);
 };
 
 exports = Object.merge(exports, {
+	disambiguateTimes: disambiguateTimes,
+
 	createDate: createDate,
 
     addMonthIfNecessary: addMonthIfNecessary,

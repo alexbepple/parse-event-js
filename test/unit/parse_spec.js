@@ -49,4 +49,13 @@ describe('Date parser', function() {
             expect(q.containsMonth('3')).to.be.false;
         });
     });
+
+    describe('accepts times as groups of digits without separator', function() {
+        it('like 0100', function() {
+            expect(q.disambiguateTimes('0100')).to.contain('01:00');
+        });
+        it('like 100', function() {
+            expect(q.disambiguateTimes('100')).to.contain('1:00');
+        });
+    });
 });
