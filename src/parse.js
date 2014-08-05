@@ -47,10 +47,14 @@ var noOfTokensThatContainDate = function (tokens) {
     return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
 };
 
+var createDate = function (dateSpec) {
+	return Date.future(dateSpec);
+};
+
 var parse = function (input) {
     var tokens = split(input);
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
-	var start = Date.create(join(tokens.first(noOfTokensForStart)));
+	var start = createDate(join(tokens.first(noOfTokensForStart)));
     return {
         title: join(tokens.from(noOfTokensForStart)),
         start: start.format('{yyyy}-{MM}-{dd} {HH}:{mm}')
@@ -64,6 +68,8 @@ var preprocessThenParse = function (input) {
 };
 
 exports = Object.merge(exports, {
+	createDate: createDate,
+
     addMonthIfNecessary: addMonthIfNecessary,
     containsMonth: containsMonth,
     containsDay: containsDay,

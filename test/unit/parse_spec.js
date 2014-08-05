@@ -1,4 +1,3 @@
-var expect = require('chai').expect;
 var q = require('parse');
 
 describe('Date parser', function() {
@@ -12,6 +11,11 @@ describe('Date parser', function() {
         it('for weekdays', function() {
             expect(q.expandAbbreviations('sun')).to.contain('sunday');
         });
+    });
+
+    it('only creates future dates', function() {
+        var dayOfWeek = Date.create().format('{dow}');
+        expect(q.createDate(dayOfWeek)).to.be.future;
     });
 
     describe('supplements missing month', function() {
