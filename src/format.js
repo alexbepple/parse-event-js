@@ -2,7 +2,7 @@ require('sugar');
 var util = require('util');
 
 var formatForAddEvent = function (event) {
-    return util.format("-title '%s' -start '%s'", event.title, event.start);
+    return util.format("-start '%s' -title '%s'", event.start, event.title);
 };
 
 exports = Object.merge(exports, {
