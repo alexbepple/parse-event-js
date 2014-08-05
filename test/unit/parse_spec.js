@@ -58,4 +58,8 @@ describe('Date parser', function() {
             expect(q.disambiguateTimes('100')).to.contain('1:00');
         });
     });
+
+    it('assumes an all-day event when no time is given', function() {
+        expect(q.parse('foo')).to.be.allDay;
+    });
 });

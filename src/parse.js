@@ -51,6 +51,9 @@ var createDate = function (dateSpec) {
 	return Date.future(dateSpec);
 };
 
+var containsTime = function (input) {
+	return (/\d{1,2}:\d{2}/).test(input);
+};
 var disambiguateTimes = function (input) {
     return input.replace(/(\d{1,2})(\d{2})/, '$1:$2');
 };
@@ -60,8 +63,9 @@ var parse = function (input) {
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
 	var start = createDate(join(tokens.first(noOfTokensForStart)));
     return {
-        title: join(tokens.from(noOfTokensForStart)),
-        start: start.format('{yyyy}-{MM}-{dd} {HH}:{mm}')
+        start: start.format('{yyyy}-{MM}-{dd} {HH}:{mm}'),
+		isAllDay: !containsTime(input),
+        title: join(tokens.from(noOfTokensForStart))
     };
 };
 

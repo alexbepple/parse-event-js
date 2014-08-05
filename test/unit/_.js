@@ -13,3 +13,14 @@ chai.Assertion.addProperty('future', function() {
     );
 });
 
+chai.Assertion.addProperty('allDay', function() {
+    var event = this._obj;
+    this.assert(
+        event.isAllDay,
+        'expected #{act} to be all-day',
+        'expected #{act} not to be all-day',
+        null,
+        event
+    );
+});
+
