@@ -88,7 +88,7 @@ var parse = function (input) {
 	var noOfTokensBeforeTitle = noOfTokensForStart + noOfTokensForDuration;
 	
     return {
-        start: start.format('{yyyy}-{MM}-{dd} {HH}:{mm}'),
+        start: start,
 		isAllDay: !containsTime(input),
 		durationInSeconds: durationInSeconds(
 			tokensAfterStart.first(noOfTokensForDuration)),
