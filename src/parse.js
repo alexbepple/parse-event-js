@@ -28,7 +28,7 @@ var guessMonth = function (day, reference) {
     return closestFutureDate.format('{Mon}');
 };
 var containsMonth = function (input) {
-    return (/jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec/i).test(input);
+    return (/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i).test(input);
 };
 var containsDay = function (input) {
     return (/^\d{1,2}$/).test(split(input)[0]);
@@ -43,7 +43,8 @@ var addMonthIfNecessary = function (input, reference) {
 
 var noOfTokensThatContainDate = function (tokens) {
     var doesThisNumberOfTokensContainDate = (1).upto(tokens.length).map(function (n) {
-        return Date.create(join(tokens.first(n))).isValid();
+        var date = createDate(join(tokens.first(n)));
+        return date.isValid() && date.isFuture();
     });
     return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
 };
@@ -78,6 +79,7 @@ var durationInSeconds = function (tokens) {
 
 var parse = function (input) {
     var tokens = split(input);
+
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
 	var start = createDate(join(tokens.first(noOfTokensForStart)));
 
@@ -102,8 +104,6 @@ var preprocessThenParse = function (input) {
 
 exports = Object.merge(exports, {
 	disambiguateTimes: disambiguateTimes,
-
-	createDate: createDate,
 
     addMonthIfNecessary: addMonthIfNecessary,
     containsMonth: containsMonth,

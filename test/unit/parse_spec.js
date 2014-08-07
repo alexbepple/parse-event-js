@@ -15,7 +15,12 @@ describe('Date parser', function() {
 
     it('only creates future dates', function() {
         var dayOfWeek = Date.create().format('{dow}');
-        expect(q.createDate(dayOfWeek)).to.be.future;
+        var dateParsedFromDayOfWeek = Date.create(q.parse(dayOfWeek).start);
+        expect(dateParsedFromDayOfWeek).to.be.future;
+    });
+    it('avoids edge cases of Sugar’s date parsing', function() {
+        var edgeCase = q.parse('1 Novotel');
+        expect(Date.create(edgeCase.start)).to.be.future;
     });
 
     describe('supplements missing month', function() {
@@ -38,15 +43,16 @@ describe('Date parser', function() {
         });
     });
 
-    describe('requires month to be given as three-letter abbreviation', function() {
+    describe('requires month to be given as three letters', function() {
         it('that can be lowercase', function() {
             expect(q.containsMonth('feb')).to.be.true;
         });
         it('that can be uppercase', function() {
             expect(q.containsMonth('Feb')).to.be.true;
         });
-        it('not as a number', function() {
-            expect(q.containsMonth('3')).to.be.false;
+        it('that stand alone', function() {
+            expect('Novotel').not.to.containMonth;
+            expect('Safonov').not.to.containMonth;
         });
     });
 

@@ -2,6 +2,8 @@ var chai = require('chai');
 
 global.expect = chai.expect;
 
+var q = require('parse');
+
 chai.Assertion.addProperty('future', function() {
     var date = this._obj;
     this.assert(
@@ -24,3 +26,12 @@ chai.Assertion.addProperty('allDay', function() {
     );
 });
 
+chai.Assertion.addProperty('containMonth', function() {
+    this.assert(
+        q.containsMonth(this._obj),
+        'expected #{act} to contain month',
+        'expected #{act} not to contain month',
+        null,
+        this._obj
+    );
+});
