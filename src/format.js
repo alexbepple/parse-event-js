@@ -2,16 +2,18 @@ require('sugar');
 var util = require('util');
 
 var formatDate = function (date) {
+    if (!date) return '';
     return date.format('{yyyy}-{MM}-{dd} {HH}:{mm}');
 };
 
 var formatForAddEvent = function (event) {
-    return util.format(
-        "-start '%s' -allDay %s -durationInSeconds %d -title '%s'", 
-        formatDate(event.start), 
-        event.isAllDay, 
-        event.durationInSeconds, 
-        event.title);
+    var parameters = [
+        util.format("-start '%s'", formatDate(event.start)),
+        '-allDay', event.isAllDay,
+        '-durationInSeconds', event.durationInSeconds,
+        util.format("-title '%s'", event.title)
+    ];
+    return parameters.join(' ');
 };
 
 exports = Object.merge(exports, {
