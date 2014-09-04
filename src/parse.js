@@ -1,7 +1,7 @@
 require('sugar');
 var util = require('util');
 var _ = require('underscore');
-var juration = require('./juration/juration');
+var juration = require('juration/juration');
 
 var split = function (input) { return input.split(' '); };
 var join = function (array) { return array.join(' '); };
