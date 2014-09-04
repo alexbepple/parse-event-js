@@ -9,8 +9,8 @@ var formatDate = function (date) {
 var formatForAddEvent = function (event) {
     var parameters = [
         util.format("-start '%s'", formatDate(event.start)),
+        util.format("-end '%s'", formatDate(event.end)),
         '-allDay', event.isAllDay,
-        '-durationInSeconds', event.durationInSeconds,
         util.format("-title '%s'", event.title)
     ];
     return parameters.join(' ');

@@ -2,6 +2,7 @@ require('sugar');
 var util = require('util');
 var _ = require('underscore');
 var juration = require('juration/juration');
+var Event = require('./event');
 
 var split = function (input) { return input.split(' '); };
 var join = function (array) { return array.join(' '); };
@@ -87,13 +88,13 @@ var parse = function (input) {
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterStart);
 	var noOfTokensBeforeTitle = noOfTokensForStart + noOfTokensForDuration;
 	
-    return {
+    return Event({
         start: start,
 		isAllDay: !containsTime(input),
 		durationInSeconds: durationInSeconds(
 			tokensAfterStart.first(noOfTokensForDuration)),
         title: join(tokens.from(noOfTokensBeforeTitle))
-    };
+    });
 };
 
 var preprocessThenParse = function (input) {
