@@ -1,6 +1,7 @@
 require('must');
 
 var chai = require('chai');
+var Assertion = chai.Assertion;
 
 global.expect = chai.expect;
 
@@ -28,7 +29,7 @@ chai.Assertion.addProperty('allDay', function() {
     );
 });
 
-chai.Assertion.addProperty('containMonth', function() {
+Assertion.addMethod('containMonth', function() {
     this.assert(
         q.containsMonth(this._obj),
         'expected #{act} to contain month',

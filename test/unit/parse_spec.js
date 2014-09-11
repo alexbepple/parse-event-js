@@ -45,14 +45,14 @@ describe('Date parser', function() {
 
     describe('requires month to be given as three letters', function() {
         it('that can be lowercase', function() {
-            expect('feb').to.containMonth;
+            expect('feb').to.containMonth();
         });
         it('that can be uppercase', function() {
-            expect('Feb').to.containMonth;
+            expect('Feb').to.containMonth();
         });
         it('that stand alone', function() {
-            expect('Novotel').not.to.containMonth;
-            expect('Safonov').not.to.containMonth;
+            expect('Novotel').not.to.containMonth();
+            expect('Safonov').not.to.containMonth();
         });
     });
 
