@@ -1,7 +1,7 @@
 
 var Event = function(me) {
     if (!me.end) {
-        me.end = me.start.addSeconds(me.durationInSeconds);
+        me.end = me.start.clone().addSeconds(me.durationInSeconds);
     }
     return me;
 };
