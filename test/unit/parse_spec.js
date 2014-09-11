@@ -16,11 +16,11 @@ describe('Date parser', function() {
     it('only creates future dates', function() {
         var dayOfWeek = Date.create().format('{dow}');
         var dateParsedFromDayOfWeek = q.parse(dayOfWeek).start;
-        expect(dateParsedFromDayOfWeek).to.be.future;
+        expect(dateParsedFromDayOfWeek).to.be.future();
     });
     it('avoids edge cases of Sugar’s date parsing', function() {
         var edgeCase = q.parse('1 Novotel');
-        expect(edgeCase.start).to.be.future;
+        expect(edgeCase.start).to.be.future();
     });
 
     describe('supplements missing month', function() {
@@ -66,7 +66,7 @@ describe('Date parser', function() {
     });
 
     it('assumes an all-day event when no time is given', function() {
-        expect(q.parse('foo')).to.be.allDay;
+        expect(q.parse('foo')).to.be.allDay();
     });
 
     it('translates duration to seconds', function() {

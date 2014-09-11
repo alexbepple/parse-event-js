@@ -7,7 +7,7 @@ global.expect = chai.expect;
 
 var q = require('parse');
 
-chai.Assertion.addProperty('future', function() {
+Assertion.addMethod('future', function() {
     var date = this._obj;
     this.assert(
         date.isFuture(),
@@ -18,7 +18,7 @@ chai.Assertion.addProperty('future', function() {
     );
 });
 
-chai.Assertion.addProperty('allDay', function() {
+Assertion.addMethod('allDay', function() {
     var event = this._obj;
     this.assert(
         event.isAllDay,
