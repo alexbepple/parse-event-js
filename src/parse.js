@@ -82,17 +82,20 @@ var parse = function (input) {
     var tokens = split(input);
 
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
-	var start = createDate(join(tokens.first(noOfTokensForStart)));
-
 	var tokensAfterStart = tokens.from(noOfTokensForStart);
+
+    var noOfTokensForEndAfterSeparator = noOfTokensThatContainDate(tokensAfterStart.from(1));
+    var tokensForEnd = tokensAfterStart.from(1).first(noOfTokensForEndAfterSeparator);
+    var noOfTokensForEndAltogether = noOfTokensForEndAfterSeparator + 1;
+
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterStart);
-	var noOfTokensBeforeTitle = noOfTokensForStart + noOfTokensForDuration;
+	var noOfTokensBeforeTitle = noOfTokensForStart + noOfTokensForEndAltogether + noOfTokensForDuration;
 	
     return Event({
-        start: start,
+        start: createDate(join(tokens.first(noOfTokensForStart))),
+        end:   createDate(join(tokensForEnd)),
+		durationInSeconds: durationInSeconds(tokensAfterStart.first(noOfTokensForDuration)),
 		isAllDay: !containsTime(input),
-		durationInSeconds: durationInSeconds(
-			tokensAfterStart.first(noOfTokensForDuration)),
         title: join(tokens.from(noOfTokensBeforeTitle))
     });
 };

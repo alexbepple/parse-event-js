@@ -18,8 +18,10 @@ Assertion.addMethod('date', function(dateAsString) {
     var date = this._obj;
     this.assert(
         date.is(dateAsString),
-        util.format("expected '%s' to be #{exp}", formatDate(date)),
-        util.format("expected '%s' not to be #{exp}", formatDate(date))
+        'expected #{act} to be #{exp}',
+        'expected #{act} not to be #{exp}',
+        dateAsString,
+        formatDate(date)
     );
 });
 

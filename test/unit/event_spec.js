@@ -2,11 +2,16 @@ require('sugar');
 var Event = require('event');
 
 describe('Event', function() {
-    it('remembers the properties it was constructed with', function() {
-        var start = Date.create();
-        expect(Event({start: start}).start).to.equal(start);
+    var start = Date.create();
+    it('remembers its start', function() {
+        Event({start: start}).should.start(start);
+    });
+    it('disregards an invalid end', function() {
+        var invalidDate = Date.create('');
+        Event({start: start, end: invalidDate}).should.end(start);
     });
 });
+
 describe('Event with start date and duration', function() {
     var event = Event({
         start: Date.create('2014-01-01 01:01'),

@@ -72,4 +72,16 @@ describe('Date parser', function() {
     it('translates duration to seconds', function() {
         expect(q.parse('1h').durationInSeconds).to.equal(3600);
     });
+
+    describe('detects end dates', function() {
+        it('as times', function() {
+            q.parse('to 0:01').should.end(Date.future('0:01'));
+        });
+        it('as more complex dates', function() {
+            q.parse('to Tuesday 0:01').should.end(Date.future('Tuesday 0:01'));
+        });
+    });
+    it('excludes end dates from title', function () {
+        q.parse('to 0:01').title.should.equal('');
+    });
 });
