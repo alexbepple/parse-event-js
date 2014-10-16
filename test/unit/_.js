@@ -1,8 +1,7 @@
-require('must');
-
 var chai = require('chai');
 var Assertion = chai.Assertion;
 
+chai.should();
 global.expect = chai.expect;
 
 var q = require('parse');
