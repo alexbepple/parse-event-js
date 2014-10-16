@@ -15,10 +15,8 @@ Assertion.addMethod('allDay', function() {
     var event = this._obj;
     this.assert(
         event.isAllDay,
-        'expected #{act} to be all-day',
-        'expected #{act} not to be all-day',
-        null,
-        event
+        'expected event to be all-day: \n' + JSON.stringify(event, null, '  '),
+        'expected event not to be all-day: \n' + JSON.stringify(event, null, '  ')
     );
 });
 
