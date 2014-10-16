@@ -86,7 +86,8 @@ var parse = function (input) {
 
     var noOfTokensForEndAfterSeparator = noOfTokensThatContainDate(tokensAfterStart.from(1));
     var tokensForEnd = tokensAfterStart.from(1).first(noOfTokensForEndAfterSeparator);
-    var noOfTokensForEndAltogether = noOfTokensForEndAfterSeparator + 1;
+    var isEndPresent = Math.min(1, noOfTokensForEndAfterSeparator);
+    var noOfTokensForEndAltogether = isEndPresent * (noOfTokensForEndAfterSeparator + 1);
 
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterStart);
 	var noOfTokensBeforeTitle = noOfTokensForStart + noOfTokensForEndAltogether + noOfTokensForDuration;

@@ -81,7 +81,12 @@ describe('Date parser', function() {
             q.parse('to Tuesday 0:01').should.end(Date.future('Tuesday 0:01'));
         });
     });
-    it('excludes end dates from title', function () {
-        q.parse('to 0:01').title.should.equal('');
+    describe('excludes end dates from title', function () {
+        it('', function() {
+            q.parse('to 0:01').title.should.equal('');
+        });
+        it('but preserves title when there is no end date', function() {
+            q.parse('foo').title.should.equal('foo');
+        });
     });
 });
