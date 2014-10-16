@@ -1,10 +1,13 @@
 var chai = require('chai');
 var Assertion = chai.Assertion;
+var util = require('util');
 
 chai.should();
 global.expect = chai.expect;
 
-var q = require('parse');
+var formatDate = function (date) {
+    return date.format('{yyyy}-{MM}-{dd} {HH}:{mm}');
+};
 
 Assertion.addMethod('future', function() {
     var date = this._obj;
@@ -16,6 +19,29 @@ Assertion.addMethod('future', function() {
         date.short()
     );
 });
+
+Assertion.addMethod('date', function(dateAsString) {
+    var date = this._obj;
+    this.assert(
+        date.is(dateAsString),
+        util.format("expected '%s' to be #{exp}", formatDate(date)),
+        util.format("expected '%s' not to be #{exp}", formatDate(date)),
+        dateAsString,
+        date
+    );
+});
+
+Assertion.addMethod('start', function(dateAsString) {
+    var event = this._obj;
+    new Assertion(event.start).to.be.date(dateAsString);
+});
+
+Assertion.addMethod('end', function(dateAsString) {
+    var event = this._obj;
+    new Assertion(event.end).to.be.date(dateAsString);
+});
+
+var q = require('parse');
 
 Assertion.addMethod('allDay', function() {
     var event = this._obj;
@@ -37,3 +63,4 @@ Assertion.addMethod('containMonth', function() {
         this._obj
     );
 });
+

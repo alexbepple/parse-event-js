@@ -13,9 +13,9 @@ describe('Event with start date and duration', function() {
         durationInSeconds: 60
     });
     it('knows when it ends', function() {
-        expect(event.end.is('2014-01-01 01:02')).to.be.true;
+        event.should.end('2014-01-01 01:02');
     });
     it('preserves its start date', function() {
-        expect(event.start.is('2014-01-01 01:01')).to.be.true;
+        event.should.start('2014-01-01 01:01');
     });
 });
