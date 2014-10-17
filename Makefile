@@ -3,7 +3,7 @@ PATH := node_modules/.bin:$(PATH)
 test: test-unit
 
 test-unit:
-	PATH=$(PATH) NODE_PATH=src mocha --check-leaks --recursive test/unit --reporter mocha-unfunk-reporter
+	PATH=$(PATH) NODE_PATH=src mocha --check-leaks --recursive test --reporter mocha-unfunk-reporter
 
 tdd: test-unit-continuously
 

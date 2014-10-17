@@ -5,7 +5,8 @@
     "chai": "~1.9.1",
     "mocha-unfunk-reporter": "~0.4.0",
     "nodemon": "~1.2.1",
-    "napa": "~0.4.1"
+    "napa": "~0.4.1",
+    "chai-shallow-deep-equal": "~1.0.0"
   },
   "dependencies": {
     "sugar": "~1.4.1",
