@@ -15,13 +15,13 @@ Assertion.addMethod('future', function() {
     );
 });
 
-Assertion.addMethod('date', function(dateAsString) {
+Assertion.addMethod('date', function(dateOrDateAsString) {
     var date = this._obj;
     this.assert(
-        date.is(dateAsString),
+        date.is(dateOrDateAsString),
         'expected #{act} to be #{exp}',
         'expected #{act} not to be #{exp}',
-        dateAsString,
+        formatDate(Date.create(dateOrDateAsString)),
         formatDate(date)
     );
 });
