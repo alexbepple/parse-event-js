@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "sugar": "~1.4.1",
-    "underscore": "~1.5.2"
+    "underscore": "~1.7.0"
   },
   "scripts": {
     "install": "napa domchristie/juration",
