@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/alexbepple/parse-event-js/badges/gpa.svg)](https://codeclimate.com/github/alexbepple/parse-event-js)
+
 
 ## What is this?
 
