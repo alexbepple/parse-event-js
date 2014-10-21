@@ -1,12 +1,19 @@
-PATH := node_modules/.bin:$(PATH)
+BIN := ./node_modules/.bin
+RUN_TESTS := $(BIN)/mocha --check-leaks --recursive test
 
-test: test-unit
-
-test-unit:
-	PATH=$(PATH) NODE_PATH=src mocha --check-leaks --recursive test --reporter mocha-unfunk-reporter
+.PHONY: test
+test:
+	NODE_PATH=src $(RUN_TESTS) --reporter mocha-unfunk-reporter
 
 tdd: test-unit-continuously
-
 test-unit-continuously:
-	PATH=$(PATH) nodemon --exec 'make test-unit' --ext js
+	$(BIN)/nodemon --exec 'make test' --ext js
+
+INSTRUMENTED := src-instrumented
+clean-instrument-src:
+	rm -rf $(INSTRUMENTED)
+instrument-src: clean-instrument-src
+	$(BIN)/istanbul instrument --output $(INSTRUMENTED) src
+coverage: instrument-src
+	ISTANBUL_REPORTERS=text-summary,lcov NODE_PATH=$(INSTRUMENTED) $(RUN_TESTS) --reporter mocha-istanbul
 

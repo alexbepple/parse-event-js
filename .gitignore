@@ -1,6 +1,6 @@
-/node_modules
-npm-debug.log
+node_modules/
 
-/.bundle
-/bundler_stubs
-/vendor
+# Istanbul
+src-instrumented/
+lcov-report/
+lcov.info
