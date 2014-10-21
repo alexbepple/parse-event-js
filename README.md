@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/alexbepple/parse-event-js.svg?branch=master)](https://travis-ci.org/alexbepple/parse-event-js)
 [![Dependency Status](https://gemnasium.com/alexbepple/parse-event-js.svg)](https://gemnasium.com/alexbepple/parse-event-js)
 [![Code Climate](https://codeclimate.com/github/alexbepple/parse-event-js/badges/gpa.svg)](https://codeclimate.com/github/alexbepple/parse-event-js)
+[![Test Coverage](https://codeclimate.com/github/alexbepple/parse-event-js/badges/coverage.svg)](https://codeclimate.com/github/alexbepple/parse-event-js)
 
 
 ## What is this?
