@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/alexbepple/parse-event-js.svg?branch=master)](https://travis-ci.org/alexbepple/parse-event-js)
 [![Code Climate](https://codeclimate.com/github/alexbepple/parse-event-js/badges/gpa.svg)](https://codeclimate.com/github/alexbepple/parse-event-js)
 
 
