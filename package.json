@@ -13,6 +13,7 @@
     "underscore": "~1.5.2"
   },
   "scripts": {
-    "install": "napa domchristie/juration"
+    "install": "napa domchristie/juration",
+    "test": "make test"
   }
 }
