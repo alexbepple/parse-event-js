@@ -1,5 +1,4 @@
 require('sugar');
-var util = require('util');
 var _ = require('underscore');
 var juration = require('juration/juration');
 var Event = require('./event');
