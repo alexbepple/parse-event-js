@@ -35,7 +35,7 @@ describe('Date parser', function() {
             expect(q.guessMonth('1', reference)).to.equal('Feb');
         });
         it('only if a day is given at all', function () {
-            expect(q.containsDay('0:00')).to.be.false;
+            expect(q.containsDay('0:00')).to.be.falsy();
             expect(q.addMonthIfNecessary('0:00')).to.equal('0:00');
         });
         it('using next month for today', function() {
