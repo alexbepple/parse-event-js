@@ -2,6 +2,7 @@ require('sugar');
 var _ = require('underscore');
 var juration = require('juration/juration');
 var Event = require('./event');
+var dateDetector = require('./date_detector');
 
 var split = function (input) { return input.split(' '); };
 var join = function (array) { return array.join(' '); };
@@ -78,10 +79,9 @@ var durationInSeconds = function (tokens) {
 };
 
 var parse = function (input) {
-    var tokens = split(input);
+	var detectedStart = dateDetector.detect(input);
 
-    var noOfTokensForStart = noOfTokensThatContainDate(tokens);
-	var tokensAfterStart = tokens.from(noOfTokensForStart);
+	var tokensAfterStart = split(detectedStart.tail);
 
     var noOfTokensForEndAfterSeparator = noOfTokensThatContainDate(tokensAfterStart.from(1));
     var tokensForEnd = tokensAfterStart.from(1).first(noOfTokensForEndAfterSeparator);
@@ -89,14 +89,14 @@ var parse = function (input) {
     var noOfTokensForEndAltogether = isEndPresent * (noOfTokensForEndAfterSeparator + 1);
 
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterStart);
-	var noOfTokensBeforeTitle = noOfTokensForStart + noOfTokensForEndAltogether + noOfTokensForDuration;
+	var noOfTokensBeforeTitle = noOfTokensForEndAltogether + noOfTokensForDuration;
 	
     return Event({
-        start: createDate(join(tokens.first(noOfTokensForStart))),
+        start: detectedStart.date,
         end:   createDate(join(tokensForEnd)),
 		durationInSeconds: durationInSeconds(tokensAfterStart.first(noOfTokensForDuration)),
 		isAllDay: !containsTime(input),
-        title: join(tokens.from(noOfTokensBeforeTitle))
+        title: join(tokensAfterStart.from(noOfTokensBeforeTitle))
     });
 };
 
