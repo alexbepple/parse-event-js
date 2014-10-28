@@ -7,57 +7,11 @@ var dateDetector = require('./date_detector');
 var split = function (input) { return input.split(' '); };
 var join = function (array) { return array.join(' '); };
 
-var wordsThatCanBeAbbreviated = 
-    split('today tomorrow monday tuesday wednesday thursday friday saturday sunday');
-
-var expandAbbreviation = function (match) {
-    return wordsThatCanBeAbbreviated.concat(match).find(function (element) {
-        return element.indexOf(match) === 0;
-    });
-};
-var expandAbbreviations = function (input) {
-    return input.replace(/\w+/, expandAbbreviation);
-};
-
-var guessMonth = function (day, reference) {
-    var dayWithCurrentMonth = Date.create(reference).set({day: day});
-    var dayWithNextMonth = Date.create(dayWithCurrentMonth).advance({month: 1});
-
-    var dates = [dayWithCurrentMonth, dayWithNextMonth];
-    var closestFutureDate = dates.find(function(d){return d.isAfter(reference);});
-
-    return closestFutureDate.format('{Mon}');
-};
-var containsMonth = function (input) {
-    return (/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i).test(input);
-};
-var containsDay = function (input) {
-    return (/^\d{1,2}$/).test(split(input)[0]);
-};
-var addMonthIfNecessary = function (input, reference) {
-    if (!containsDay(input) || containsMonth(input)) return input;
-
-    var tokens = split(input);
-    var guessedMonth = guessMonth(tokens[0], reference);
-    return join(tokens.include(guessedMonth, 1));
-};
-
-var noOfTokensThatContainDate = function (tokens) {
-    var doesThisNumberOfTokensContainDate = (1).upto(tokens.length).map(function (n) {
-        var date = createDate(join(tokens.first(n)));
-        return date.isValid() && date.isFuture();
-    });
-    return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
-};
-
-var createDate = function (dateSpec) {
-	return Date.future(dateSpec);
-};
-
 var containsTime = function (input) {
 	return (/\d{1,2}:\d{2}/).test(input);
 };
 var disambiguateTimes = function (input) {
+	// this is a duplication of logic in date_detector
     return input.replace(/(\d{1,2})(\d{2})/, '$1:$2');
 };
 
@@ -79,42 +33,25 @@ var durationInSeconds = function (tokens) {
 };
 
 var parse = function (input) {
-	var detectedStart = dateDetector.detect(input);
+	var startMatch = dateDetector.detect(input);
+	var tokensAfterStart = split(startMatch.tail);
 
-	var tokensAfterStart = split(detectedStart.tail);
+	var endMatch = dateDetector.detect(join(tokensAfterStart.from(1)));
+	if (!endMatch.date.isValid()) endMatch.tail = startMatch.tail;
+	var tokensAfterEnd = split(endMatch.tail);
 
-    var noOfTokensForEndAfterSeparator = noOfTokensThatContainDate(tokensAfterStart.from(1));
-    var tokensForEnd = tokensAfterStart.from(1).first(noOfTokensForEndAfterSeparator);
-    var isEndPresent = Math.min(1, noOfTokensForEndAfterSeparator);
-    var noOfTokensForEndAltogether = isEndPresent * (noOfTokensForEndAfterSeparator + 1);
-
-	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterStart);
-	var noOfTokensBeforeTitle = noOfTokensForEndAltogether + noOfTokensForDuration;
+	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterEnd);
 	
     return Event({
-        start: detectedStart.date,
-        end:   createDate(join(tokensForEnd)),
-		durationInSeconds: durationInSeconds(tokensAfterStart.first(noOfTokensForDuration)),
+        start: startMatch.date,
+        end:   endMatch.date,
+		durationInSeconds: durationInSeconds(tokensAfterEnd.first(noOfTokensForDuration)),
 		isAllDay: !containsTime(input),
-        title: join(tokensAfterStart.from(noOfTokensBeforeTitle))
+        title: join(tokensAfterEnd.from(noOfTokensForDuration))
     });
 };
 
-var preprocessThenParse = function (input) {
-    return _.compose(
-        parse, addMonthIfNecessary, expandAbbreviations, disambiguateTimes
-    ).call(this, input);
+module.exports = {
+    parse: _.compose(parse, disambiguateTimes)
 };
-
-exports = Object.merge(exports, {
-	disambiguateTimes: disambiguateTimes,
-
-    addMonthIfNecessary: addMonthIfNecessary,
-    containsMonth: containsMonth,
-    containsDay: containsDay,
-    guessMonth: guessMonth,
-
-    expandAbbreviations: expandAbbreviations,
-    parse: preprocessThenParse,
-});
 
