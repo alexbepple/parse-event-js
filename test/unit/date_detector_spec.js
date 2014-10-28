@@ -1,7 +1,7 @@
 var x = require('date_detector');
 
 describe('Date detector', function() {
-	it('saves date from input in given property', function() {
+	it('saves date from input in property "date"', function() {
 		x.detect('tomorrow').date.should.be.date('tomorrow');
 	});
 	it('saves unprocessed tail of input', function() {
