@@ -44,8 +44,7 @@ describe('Date detector', function() {
 			x.addMonthIfNecessary('3 jan', reference).should.equal('3 jan');
 		});
     });
-
-    describe('requires month to be given as three letters', function() {
+    describe('recognizes month when given as three letters', function() {
         it('that can be lowercase', function() {
             expect('feb').to.containMonth();
         });
@@ -75,5 +74,4 @@ describe('Date detector', function() {
             x.detect('100').should.deep.equal(x.detect('1:00'));
         });
     });
-
 });
