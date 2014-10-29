@@ -2,7 +2,8 @@ require('sugar');
 var _ = require('underscore');
 var juration = require('juration/juration');
 var Event = require('./event');
-var dateDetector = require('./date_detector');
+var detectStart = require('./date_detector').detect;
+var detectEnd = require('./end_detector').detector(detectStart);
 
 var split = function (input) { return input.split(' '); };
 var join = function (array) { return array.join(' '); };
@@ -33,13 +34,10 @@ var durationInSeconds = function (tokens) {
 };
 
 var parse = function (input) {
-	var startMatch = dateDetector.detect(input);
-	var tokensAfterStart = split(startMatch.tail);
+	var startMatch = detectStart(input);
+	var endMatch = detectEnd(startMatch.tail);
 
-	var endMatch = dateDetector.detect(join(tokensAfterStart.from(1)));
-	if (!endMatch.date.isValid()) endMatch.tail = startMatch.tail;
 	var tokensAfterEnd = split(endMatch.tail);
-
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterEnd);
 	
     return Event({
