@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var m = require('./_helper');
 var sinon = require('sinon');
 var end = require('end_detector');

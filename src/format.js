@@ -1,5 +1,6 @@
 require('sugar');
 var util = require('util');
+var m = require('./misc');
 
 var formatDate = function (date) {
     if (!date) return '';
@@ -13,10 +14,10 @@ var formatForAddEvent = function (event) {
         '-allDay', event.isAllDay,
         util.format("-title '%s'", event.title)
     ];
-    return parameters.join(' ');
+    return m.join(parameters);
 };
 
-exports = Object.merge(exports, {
+module.exports = {
     formatForAddEvent: formatForAddEvent
-});
+};
 

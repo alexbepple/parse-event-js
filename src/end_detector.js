@@ -1,9 +1,11 @@
 var m = require('./misc');
+var r = require('ramda');
 
 var endDetector = function(detectDate) {
 	return function(input) {
-		var inputWithoutFirstToken = m.join(m.split(input).from(1));
-		var endMatch = detectDate(inputWithoutFirstToken);
+		var skipFirstToken = r.pipe(m.split, r.skip(1), m.join);
+		var detectEnd = r.pipe(skipFirstToken, detectDate);
+		var endMatch = detectEnd(input);
 		if (!endMatch.date.isValid()) endMatch.tail = input;
 		return endMatch;
 	};

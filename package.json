@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "sugar": "~1.4.1",
-    "lodash": "~2.4.1"
+    "ramda": "~0.7.2"
   },
   "scripts": {
     "install": "napa domchristie/juration",

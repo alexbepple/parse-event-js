@@ -1,9 +1,9 @@
-var _ = require('lodash');
+var r = require('ramda');
 var m = require('./misc');
 
 var noOfTokensThatContainDate = function (tokens) {
-    var doesThisNumberOfTokensContainDate = (1).upto(tokens.length).map(function (n) {
-        var date = createDate(m.join(tokens.first(n)));
+    var doesThisNumberOfTokensContainDate = r.range(0, tokens.length).map(function (n) {
+        var date = createDate(m.join(r.take(n+1, tokens)));
         return date.isValid() && date.isFuture();
     });
     return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
@@ -17,10 +17,10 @@ var detectDate = function (input, targetProperty) {
     var tokens = m.split(input);
 
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
-	var tokensAfterStart = tokens.from(noOfTokensForStart);
+	var tokensAfterStart = r.skip(noOfTokensForStart, tokens);
 
 	return {
-		date: createDate(m.join(tokens.first(noOfTokensForStart))),
+		date: createDate(m.join(r.take(noOfTokensForStart, tokens))),
 		tail: m.join(tokensAfterStart)
 	};
 };
@@ -45,7 +45,7 @@ var addMonthIfNecessary = function (input, reference) {
 
     var tokens = m.split(input);
     var guessedMonth = guessMonth(tokens[0], reference);
-    return m.join(tokens.include(guessedMonth, 1));
+    return m.join(r.insert(1, guessedMonth, tokens));
 };
 
 
@@ -65,8 +65,8 @@ var disambiguateTimes = function (input) {
 };
 
 module.exports = {
-	detect: _.compose(
-        detectDate, addMonthIfNecessary, expandAbbreviations, disambiguateTimes
+	detect: r.pipe(
+		disambiguateTimes, expandAbbreviations, addMonthIfNecessary, detectDate
     ),
 	addMonthIfNecessary: addMonthIfNecessary,
 	containsMonth: containsMonth

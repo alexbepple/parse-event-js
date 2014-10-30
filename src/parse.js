@@ -1,5 +1,5 @@
 require('sugar');
-var _ = require('lodash');
+var r = require('ramda');
 var m = require('./misc');
 
 var juration = require('juration/juration');
@@ -16,9 +16,9 @@ var disambiguateTimes = function (input) {
 };
 
 var noOfTokensThatContainDuration = function (tokens) {
-	var doesThisNumberOfTokensContainDuration = (1).upto(tokens.length).map(function (n) {
+	var doesThisNumberOfTokensContainDuration = r.range(0, tokens.length).map(function (n) {
 		try {
-			juration.parse(m.join(tokens.first(n)));
+			juration.parse(m.join(r.take(n+1, tokens)));
 			return true;
 		} catch (err) {
 			return false;
@@ -42,13 +42,13 @@ var parse = function (input) {
     return Event({
         start: startMatch.date,
         end:   endMatch.date,
-		durationInSeconds: durationInSeconds(tokensAfterEnd.first(noOfTokensForDuration)),
+		durationInSeconds: durationInSeconds(r.take(noOfTokensForDuration, tokensAfterEnd)),
 		isAllDay: !containsTime(input),
-        title: m.join(tokensAfterEnd.from(noOfTokensForDuration))
+        title: m.join(r.skip(noOfTokensForDuration, tokensAfterEnd))
     });
 };
 
 module.exports = {
-    parse: _.compose(parse, disambiguateTimes)
+    parse: r.pipe(disambiguateTimes, parse)
 };
 
