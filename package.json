@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "sugar": "~1.4.1",
-    "ramda": "~0.7.2"
+    "ramda": "~0.7.2",
+    "moment": "~2.8.3"
   },
   "scripts": {
     "install": "napa domchristie/juration",
