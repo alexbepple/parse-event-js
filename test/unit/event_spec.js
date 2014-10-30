@@ -1,4 +1,5 @@
 require('sugar');
+var h = require('./_helper');
 var Event = require('event');
 
 describe('Event', function() {
@@ -7,8 +8,7 @@ describe('Event', function() {
         Event({start: start}).should.start(start);
     });
     it('disregards an invalid end', function() {
-        var invalidDate = Date.create('');
-        Event({start: start, end: invalidDate}).should.end(start);
+        Event({start: start, end: h.invalidDate()}).should.end(start);
     });
 });
 

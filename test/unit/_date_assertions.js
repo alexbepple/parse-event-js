@@ -15,6 +15,17 @@ Assertion.addMethod('future', function() {
     );
 });
 
+Assertion.addMethod('valid', function() {
+    var date = this._obj;
+    this.assert(
+        date.isValid(),
+        'expected #{act} to be valid',
+        'expected #{act} not to be valid',
+        null,
+        formatDate(date)
+    );
+});
+
 Assertion.addMethod('date', function(dateOrDateAsString) {
     var date = this._obj;
     this.assert(

@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var m = require('./_helper');
 var sinon = require('sinon');
 var end = require('end_detector');
 
@@ -22,7 +23,7 @@ describe('End detector', function() {
 	});
 	it('returns the input as the tail when it cannot find a date', function() {
 		var dateDetectorResultWithInvalidDate = {
-			date: Date.create('invalid'),
+			date: m.invalidDate(),
 			tail: 'tail from date detector'
 		};
 		var detectEnd = end.detector(function(input) {
