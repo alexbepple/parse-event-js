@@ -1,11 +1,9 @@
 var _ = require('underscore');
-
-var split = function (input) { return input.split(' '); };
-var join = function (array) { return array.join(' '); };
+var m = require('./misc');
 
 var noOfTokensThatContainDate = function (tokens) {
     var doesThisNumberOfTokensContainDate = (1).upto(tokens.length).map(function (n) {
-        var date = createDate(join(tokens.first(n)));
+        var date = createDate(m.join(tokens.first(n)));
         return date.isValid() && date.isFuture();
     });
     return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
@@ -16,14 +14,14 @@ var createDate = function (dateSpec) {
 };
 
 var detectDate = function (input, targetProperty) {
-    var tokens = split(input);
+    var tokens = m.split(input);
 
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
 	var tokensAfterStart = tokens.from(noOfTokensForStart);
 
 	return {
-		date: createDate(join(tokens.first(noOfTokensForStart))),
-		tail: join(tokensAfterStart)
+		date: createDate(m.join(tokens.first(noOfTokensForStart))),
+		tail: m.join(tokensAfterStart)
 	};
 };
 
@@ -40,19 +38,19 @@ var containsMonth = function (input) {
     return (/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i).test(input);
 };
 var containsDay = function (input) {
-    return (/^\d{1,2}$/).test(split(input)[0]);
+    return (/^\d{1,2}$/).test(m.split(input)[0]);
 };
 var addMonthIfNecessary = function (input, reference) {
 	if (!containsDay(input) || containsMonth(input)) return input;
 
-    var tokens = split(input);
+    var tokens = m.split(input);
     var guessedMonth = guessMonth(tokens[0], reference);
-    return join(tokens.include(guessedMonth, 1));
+    return m.join(tokens.include(guessedMonth, 1));
 };
 
 
 var wordsThatCanBeAbbreviated = 
-    split('today tomorrow monday tuesday wednesday thursday friday saturday sunday');
+    m.split('today tomorrow monday tuesday wednesday thursday friday saturday sunday');
 var expandAbbreviation = function (match) {
     return wordsThatCanBeAbbreviated.concat(match).find(function (element) {
         return element.indexOf(match) === 0;

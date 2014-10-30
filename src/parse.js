@@ -1,12 +1,11 @@
 require('sugar');
 var _ = require('underscore');
+var m = require('./misc');
+
 var juration = require('juration/juration');
 var Event = require('./event');
 var detectStart = require('./date_detector').detect;
 var detectEnd = require('./end_detector').detector(detectStart);
-
-var split = function (input) { return input.split(' '); };
-var join = function (array) { return array.join(' '); };
 
 var containsTime = function (input) {
 	return (/\d{1,2}:\d{2}/).test(input);
@@ -19,7 +18,7 @@ var disambiguateTimes = function (input) {
 var noOfTokensThatContainDuration = function (tokens) {
 	var doesThisNumberOfTokensContainDuration = (1).upto(tokens.length).map(function (n) {
 		try {
-			juration.parse(join(tokens.first(n)));
+			juration.parse(m.join(tokens.first(n)));
 			return true;
 		} catch (err) {
 			return false;
@@ -30,14 +29,14 @@ var noOfTokensThatContainDuration = function (tokens) {
 
 var durationInSeconds = function (tokens) {
 	if (tokens.isEmpty()) return 0;
-	return juration.parse(join(tokens));
+	return juration.parse(m.join(tokens));
 };
 
 var parse = function (input) {
 	var startMatch = detectStart(input);
 	var endMatch = detectEnd(startMatch.tail);
 
-	var tokensAfterEnd = split(endMatch.tail);
+	var tokensAfterEnd = m.split(endMatch.tail);
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterEnd);
 	
     return Event({
@@ -45,7 +44,7 @@ var parse = function (input) {
         end:   endMatch.date,
 		durationInSeconds: durationInSeconds(tokensAfterEnd.first(noOfTokensForDuration)),
 		isAllDay: !containsTime(input),
-        title: join(tokensAfterEnd.from(noOfTokensForDuration))
+        title: m.join(tokensAfterEnd.from(noOfTokensForDuration))
     });
 };
 
