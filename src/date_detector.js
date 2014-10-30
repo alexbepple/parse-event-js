@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var m = require('./misc');
 
 var noOfTokensThatContainDate = function (tokens) {

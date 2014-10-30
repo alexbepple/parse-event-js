@@ -1,5 +1,5 @@
 require('sugar');
-var _ = require('underscore');
+var _ = require('lodash');
 var m = require('./misc');
 
 var juration = require('juration/juration');
