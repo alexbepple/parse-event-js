@@ -1,5 +1,5 @@
 require('sugar');
-
+var moment = require('moment');
 var r = require('ramda');
 var m = require('./misc');
 
@@ -28,13 +28,13 @@ var detectDate = function (input, targetProperty) {
 };
 
 var guessMonth = function (day, reference) {
-    var dayWithCurrentMonth = Date.create(reference).set({day: day});
-    var dayWithNextMonth = Date.create(dayWithCurrentMonth).advance({month: 1});
+    var dayWithCurrentMonth = moment(reference).date(day);
+    var dayWithNextMonth = dayWithCurrentMonth.clone().add(1, 'month');
 
     var dates = [dayWithCurrentMonth, dayWithNextMonth];
     var closestFutureDate = dates.find(function(d){return d.isAfter(reference);});
 
-    return closestFutureDate.format('{Mon}');
+    return closestFutureDate.format('MMM');
 };
 var containsMonth = function (input) {
     return (/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i).test(input);
