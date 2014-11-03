@@ -1,10 +1,11 @@
 var m = require('./_helper');
+var moment = require('moment');
 var sinon = require('sinon');
 var end = require('end_detector');
 
 describe('End detector', function() {
 	it('returns date from date detector using input minus 1st token', function() {
-		var dateFromDateDetector = Date.create();
+		var dateFromDateDetector = moment().toDate();
 		var dateDetectorStub = sinon.stub();
 		dateDetectorStub.withArgs('bar').returns({date: dateFromDateDetector});
 		dateDetectorStub.returns({date: "'wrong input for date detector'"});
@@ -14,7 +15,7 @@ describe('End detector', function() {
 	});
 	it('uses tail of date detector when it finds a date', function() {
 		var resultWithValidDate = {
-			date: Date.create(), 
+			date: moment().toDate(),
 			tail: 'tail from date detector'
 		};
 		detectEnd = end.detector(function() {return resultWithValidDate;});

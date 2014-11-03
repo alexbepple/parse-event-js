@@ -1,15 +1,17 @@
+var moment = require('moment');
 var x = require('date_detector');
 
 describe('Date detector', function() {
 	it('saves date from input in property "date"', function() {
-		x.detect('tomorrow').date.should.be.date('tomorrow');
+        var tomorrow = moment().add(1, 'day').startOf('day');
+		x.detect(tomorrow.format('D MMM')).date.should.be.date(tomorrow);
 	});
 	it('saves unprocessed tail of input', function() {
 		x.detect('tomorrow').tail.should.equal('');
 	});
 
     it('only creates future dates', function() {
-		var todayAsDayOfWeek = Date.create().format('{dow}');
+		var todayAsDayOfWeek = moment().format('ddd');
 		x.detect(todayAsDayOfWeek).date.should.be.future();
     });
     it('avoids edge cases of Sugar’s date parsing', function() {
@@ -20,12 +22,12 @@ describe('Date detector', function() {
     describe('supplements missing month', function() {
         var reference;
         beforeEach(function() {
-            reference = Date.create('2 Jan');
+            reference = moment().month('jan').date(2).toDate();
         });
 		it('if none is given', function() {
-			var now = Date.create();
-			var todayAsDayOfMonth = now.format('{d}');
-			var oneMonthLater = now.clone().addMonths(1).format('{d} {mon}');
+			var now = moment();
+			var todayAsDayOfMonth = now.format('D');
+			var oneMonthLater = now.clone().add(1, 'month').format('D MMM');
 			x.detect(todayAsDayOfMonth).should.deep.equal(x.detect(oneMonthLater));
 		});
         it('using current month', function() {

@@ -1,39 +1,42 @@
+var moment = require('moment');
 var Assertion = require('chai').Assertion;
 
-var formatDate = function (date) {
-    return date.format('{yyyy}-{MM}-{dd} {HH}:{mm}');
+var formatMoment = function (moment) {
+    return moment.format('YYYY-MM-DD HH:mm');
 };
 
+
 Assertion.addMethod('future', function() {
-    var date = this._obj;
+    var myMoment = moment(this._obj);
     this.assert(
-        date.isFuture(),
+        myMoment.isAfter(moment()),
         'expected #{act} to be in the future',
         'expected #{act} not to be in the future',
         null,
-        formatDate(date)
+        formatMoment(myMoment)
     );
 });
 
 Assertion.addMethod('valid', function() {
-    var date = this._obj;
+    var myMoment = moment(this._obj);
     this.assert(
-        date.isValid(),
+        myMoment.isValid(),
         'expected #{act} to be valid',
         'expected #{act} not to be valid',
         null,
-        formatDate(date)
+        formatMoment(myMoment)
     );
 });
 
 Assertion.addMethod('date', function(dateOrDateAsString) {
-    var date = this._obj;
+    var actualMoment = moment(this._obj);
+    var expectedMoment = moment(dateOrDateAsString);
     this.assert(
-        date.is(dateOrDateAsString),
+        actualMoment.isSame(expectedMoment),
         'expected #{act} to be #{exp}',
         'expected #{act} not to be #{exp}',
-        formatDate(Date.create(dateOrDateAsString)),
-        formatDate(date)
+        formatMoment(expectedMoment),
+        formatMoment(actualMoment)
     );
 });
 

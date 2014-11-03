@@ -1,5 +1,6 @@
+var moment = require('moment');
 
 module.exports = {
-	invalidDate: function() { return Date.create('invalid'); }
+	invalidDate: function() { return moment.invalid().toDate(); }
 };
 
