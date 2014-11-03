@@ -1,6 +1,6 @@
 var m = require('./_date_helper');
 
-describe('Test helper', function() {
+describe('Date helper', function() {
 	it('creates invalid dates', function() {
 		expect(m.invalidDate()).not.to.be.valid();
 	});

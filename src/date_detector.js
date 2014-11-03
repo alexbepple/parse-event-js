@@ -17,7 +17,7 @@ var createDate = function (dateSpec) {
 	return Date.future(dateSpec);
 };
 
-var detectDate = function (input, targetProperty) {
+var detectDate = function (input) {
     var tokens = m.split(input);
 
     var noOfTokensForStart = noOfTokensThatContainDate(tokens);
