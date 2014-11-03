@@ -4,9 +4,11 @@ var r = require('ramda');
 var m = require('./misc');
 
 var noOfTokensThatContainDate = function (tokens) {
+    var now = moment();
     var doesThisNumberOfTokensContainDate = r.range(0, tokens.length).map(function (n) {
         var date = createDate(m.join(r.take(n+1, tokens)));
-        return date.isValid() && date.isFuture();
+        var aMoment = moment(date);
+        return aMoment.isValid() && aMoment.isAfter(now);
     });
     return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
 };
