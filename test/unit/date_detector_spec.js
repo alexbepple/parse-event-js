@@ -1,10 +1,10 @@
 var moment = require('moment');
+var tomorrow = require('../_date_helper').tomorrow;
 var x = require('date_detector');
 
 describe('Date detector', function() {
 	it('saves date from input in property "date"', function() {
-        var tomorrow = moment().add(1, 'day').startOf('day');
-		x.detect(tomorrow.format('D MMM')).date.should.be.date(tomorrow);
+		x.detect(tomorrow().format('D MMM')).date.should.be.date(tomorrow());
 	});
 	it('saves unprocessed tail of input', function() {
 		x.detect('tomorrow').tail.should.equal('');

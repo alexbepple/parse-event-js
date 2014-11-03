@@ -1,18 +1,21 @@
 var parser = require('parse');
+var moment = require('moment');
+var tomorrow = require('../_date_helper').tomorrow;
 
 describe('Parser parses events', function() {
     it('without extension', function() {
+        var tomorrowOneOclock = tomorrow().hour(1).toDate();
         parser.parse('tomorrow 1:00 foo').should.containDeep({
-            start: Date.future('tomorrow 1:00'),
-            end: Date.future('tomorrow 1:00'),
+            start: tomorrowOneOclock,
+            end: tomorrowOneOclock,
             isAllDay: false,
             title: 'foo'
         });
     });
 
     var tomorrowFromOneToTwo = {
-            start: Date.future('tomorrow 1:00'),
-            end: Date.future('tomorrow 2:00'),
+            start: tomorrow().hour(1).toDate(),
+            end: tomorrow().hour(2).toDate(),
             isAllDay: false,
             title: 'foo'
     };
@@ -27,8 +30,8 @@ describe('Parser parses events', function() {
 
     it('all-day events', function() {
         parser.parse('tomorrow foo').should.containDeep({
-            start: Date.future('tomorrow 0:00'),
-            end: Date.future('tomorrow 0:00'),
+            start: tomorrow().toDate(),
+            end: tomorrow().toDate(),
             isAllDay: true,
             title: 'foo'
         });

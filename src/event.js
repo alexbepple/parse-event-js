@@ -1,7 +1,8 @@
+var moment = require('moment');
 
 var Event = function(me) {
-    if (!(me.end && me.end.isValid())) {
-        me.end = me.start.clone().addSeconds(me.durationInSeconds);
+    if (!(me.end && moment(me.end).isValid())) {
+        me.end = moment(me.start).clone().add(me.durationInSeconds, 'seconds').toDate();
     }
     return me;
 };

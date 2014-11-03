@@ -1,5 +1,5 @@
 var moment = require('moment');
-var h = require('./_helper');
+var h = require('../_date_helper');
 var Event = require('event');
 
 describe('Event', function() {

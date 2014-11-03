@@ -1,3 +1,5 @@
+require('sugar');
+
 var r = require('ramda');
 var m = require('./misc');
 
