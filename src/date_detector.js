@@ -5,27 +5,27 @@ var m = require('./misc');
 
 var noOfTokensThatContainDate = function (tokens) {
     var now = moment();
-    var doesThisNumberOfTokensContainDate = r.range(0, tokens.length).map(function (n) {
-        var date = createDate(m.join(r.take(n+1, tokens)));
-        var aMoment = moment(date);
+    var takeX = function (_, idx, array) { return r.take(idx+1, array); };
+    var makeForValidDate = function (tokens) {
+        var aMoment = moment(createDateFromTokens(tokens));
         return aMoment.isValid() && aMoment.isAfter(now);
-    });
-    return doesThisNumberOfTokensContainDate.lastIndexOf(true) + 1;
+    };
+    var noOfTokensThatContainDate = r.pipe(
+        r.map.idx(takeX), r.findLastIndex(makeForValidDate), r.add(1));
+    return noOfTokensThatContainDate(tokens);
 };
 
 var createDate = function (dateSpec) {
 	return Date.future(dateSpec);
 };
+var createDateFromTokens = r.pipe(m.join, createDate);
 
 var detectDate = function (input) {
     var tokens = m.split(input);
-
-    var noOfTokensForStart = noOfTokensThatContainDate(tokens);
-	var tokensAfterStart = r.skip(noOfTokensForStart, tokens);
-
+    var noOfTokensForDate = noOfTokensThatContainDate(tokens);
 	return {
-		date: createDate(m.join(r.take(noOfTokensForStart, tokens))),
-		tail: m.join(tokensAfterStart)
+		date: createDateFromTokens(r.take(noOfTokensForDate, tokens)),
+		tail: m.join(r.skip(noOfTokensForDate, tokens))
 	};
 };
 
