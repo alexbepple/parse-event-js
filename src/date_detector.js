@@ -8,11 +8,11 @@ var noOfTokensThatContainDate = function (tokens) {
     var takeX = function (_, idx, array) { return r.take(idx+1, array); };
     var makeForValidDate = function (tokens) {
         var aMoment = moment(createDateFromTokens(tokens));
-        return aMoment.isValid() && aMoment.isAfter(now);
+        return aMoment.isValid();
     };
-    var noOfTokensThatContainDate = r.pipe(
-        r.map.idx(takeX), r.findLastIndex(makeForValidDate), r.add(1));
-    return noOfTokensThatContainDate(tokens);
+    var firstTokensThatContainDate = r.pipe(
+        r.map.idx(takeX), r.takeWhile(makeForValidDate));
+    return firstTokensThatContainDate(tokens).length;
 };
 
 var createDate = function (dateSpec) {

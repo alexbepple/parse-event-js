@@ -10,9 +10,4 @@ describe('Date detector', function() {
             tail: 'foo'
         });
 	});
-
-    it('avoids edge cases of Sugar’s date parsing', function() {
-        var edgeCase = x.detect('1 Novotel');
-        edgeCase.date.should.be.future();
-    });
 });

@@ -7,6 +7,10 @@ describe('Date parser', function() {
 		var todayAsDayOfWeek = moment().format('ddd');
         expect(future(todayAsDayOfWeek)).to.be.future();
     });
+    it('avoids edge cases of Sugar’s date parsing', function() {
+        var edgeCase = future('1 Novotel');
+        expect(edgeCase).not.to.be.valid();
+    });
 
     describe('expands abbreviations', function() {
         it('tomorrow', function() {

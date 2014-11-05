@@ -7,6 +7,12 @@ var future = function(dateSpec) {
 	return Date.future(dateSpec);
 };
 
+var invalidateIfNecessary = function(date) {
+    var now = moment();
+    if (moment(date).isAfter(now)) return date;
+    return moment.invalid();
+};
+
 var wordsThatCanBeAbbreviated = 
     m.split('today tomorrow monday tuesday wednesday thursday friday saturday sunday');
 var expandAbbreviation = function (match) {
@@ -47,7 +53,7 @@ var addMonthIfNecessary = function (input, reference) {
 };
 
 module.exports = {
-    future: r.pipe(disambiguateTimes, expandAbbreviations, addMonthIfNecessary, future),
+    future: r.pipe(disambiguateTimes, expandAbbreviations, addMonthIfNecessary, future, invalidateIfNecessary),
     addMonthIfNecessary: addMonthIfNecessary,
     containsMonth: containsMonth
 };
