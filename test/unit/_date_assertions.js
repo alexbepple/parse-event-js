@@ -1,42 +1,46 @@
 var moment = require('moment');
 var Assertion = require('chai').Assertion;
 
-var formatMoment = function (moment) {
-    return moment.format('YYYY-MM-DD HH:mm');
+var formatDate = function (dateSpec) {
+    if (dateSpec === undefined) return dateSpec;
+    return moment(dateSpec).format('YYYY-MM-DD HH:mm');
 };
 
 
 Assertion.addMethod('future', function() {
-    var myMoment = moment(this._obj);
+    var actual = this._obj;
     this.assert(
-        myMoment.isAfter(moment()),
+        moment(actual).isAfter(moment()),
         'expected #{act} to be in the future',
         'expected #{act} not to be in the future',
         null,
-        formatMoment(myMoment)
+        formatDate(actual)
     );
 });
 
 Assertion.addMethod('valid', function() {
+    var actual = this._obj;
     var myMoment = moment(this._obj);
     this.assert(
-        myMoment.isValid(),
+        moment(actual).isValid(),
         'expected #{act} to be valid',
         'expected #{act} not to be valid',
         null,
-        formatMoment(myMoment)
+        formatDate(actual)
     );
 });
 
 Assertion.addMethod('date', function(dateOrDateAsString) {
-    var actualMoment = moment(this._obj);
-    var expectedMoment = moment(dateOrDateAsString);
+    var actual = this._obj;
     this.assert(
-        actualMoment.isSame(expectedMoment),
+        moment(actual).isSame(moment(dateOrDateAsString)),
         'expected #{act} to be #{exp}',
         'expected #{act} not to be #{exp}',
-        formatMoment(expectedMoment),
-        formatMoment(actualMoment)
+        formatDate(dateOrDateAsString),
+        formatDate(actual)
     );
 });
 
+module.exports = {
+    formatDate: formatDate
+};

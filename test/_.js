@@ -11,3 +11,6 @@ Assertion.addMethod('containDeep', function(tree) {
 Assertion.addMethod('falsy', function() {
 	new Assertion(this._obj).to.be.false;
 });
+Assertion.addMethod('beUndefined', function() {
+	new Assertion(this._obj).to.be.undefined;
+});

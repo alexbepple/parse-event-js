@@ -1,5 +1,5 @@
 var Assertion = require('chai').Assertion;
-var x = require('date_detector');
+var x = require('date_parser');
 
 Assertion.addMethod('containMonth', function() {
     this.assert(
