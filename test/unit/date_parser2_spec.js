@@ -6,16 +6,18 @@ describe('New date parser: #future', function() {
         expect(moment.isMoment(future('1 jan'))).to.be.truthy();
     });
 
-    it('creates date from D MMM (day of month and short month)', function() {
-        var jan1 = future('1 Jan');
-        expect(jan1.date()).to.equal(1);
-        expect(jan1.month()).to.equal(0);
-    });
-    it('accepts MMM given in lowercase', function() {
-        expect(future('1 jan')).to.be.date(future('1 Jan'));
-    });
-    it('invalidates date when there is superfluous input', function() {
-        expect(future('1 jan foo')).not.to.be.valid();
+    describe('creates date from D MMM (day of month and short month)', function() {
+        it('when month in capital case', function() {
+            var jan1 = future('1 Jan');
+            expect(jan1.date()).to.equal(1);
+            expect(jan1.month()).to.equal(0);
+        });
+        it('when month in lowercase', function() {
+            expect(future('1 jan')).to.be.date(future('1 Jan'));
+        });
+        it('invalidates date when there is superfluous input', function() {
+            expect(future('1 jan foo')).not.to.be.valid();
+        });
     });
 
     describe('creates date from day of week', function() {
@@ -37,7 +39,12 @@ describe('New date parser: #future', function() {
         });
     });
     
-    it('creates date from time', function() {
-        expect(future('01:00').hour()).to.equal(1);
+    describe('creates date from time', function() {
+        it('', function() {
+            expect(future('01:00').hour()).to.equal(1);
+        });
+        it('invalidates date when there is superfluous input', function() {
+            expect(future('01:00 foo')).not.to.be.valid();
+        });
     });
 });
