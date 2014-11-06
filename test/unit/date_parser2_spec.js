@@ -1,7 +1,7 @@
 var future = require('date_parser2').future;
 var moment = require('moment');
 
-describe('Date parser#future', function() {
+describe('New date parser: #future', function() {
     it('technically creates a Moment.js moment', function() {
         expect(moment.isMoment(future('1 jan'))).to.be.truthy();
     });
@@ -13,6 +13,9 @@ describe('Date parser#future', function() {
     });
     it('accepts MMM given in lowercase', function() {
         expect(future('1 jan')).to.be.date(future('1 Jan'));
+    });
+    it('invalidates date when there is superfluous input', function() {
+        expect(future('1 jan foo')).not.to.be.valid();
     });
 
     describe('creates date from day of week', function() {

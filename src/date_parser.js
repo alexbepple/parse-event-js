@@ -2,8 +2,11 @@ require('sugar');
 var r = require('ramda');
 var m = require('./misc');
 var moment = require('moment');
+var newParser = require('./date_parser2');
 
 var future = function(dateSpec) {
+    var momentFromNewParser = newParser.future(dateSpec);
+    if (momentFromNewParser.isAfter(moment())) return momentFromNewParser.toDate();
 	return Date.future(dateSpec);
 };
 
