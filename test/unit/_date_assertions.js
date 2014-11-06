@@ -18,6 +18,17 @@ Assertion.addMethod('future', function() {
     );
 });
 
+Assertion.addMethod('after', function(momentOrDateOrDateSpec) {
+    var actual = this._obj;
+    this.assert(
+        moment(actual).isAfter(moment(momentOrDateOrDateSpec)),
+        'expected #{act} to be after #{exp}',
+        'expected #{act} not to be after #{exp}',
+        formatDate(momentOrDateOrDateSpec),
+        formatDate(actual)
+    );
+});
+
 Assertion.addMethod('valid', function() {
     var actual = this._obj;
     var myMoment = moment(this._obj);
