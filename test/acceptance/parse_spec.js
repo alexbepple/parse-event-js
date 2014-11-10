@@ -2,7 +2,7 @@ var parser = require('parse');
 var moment = require('moment');
 var tomorrow = require('../_date_helper').tomorrow;
 
-describe('Parser parses events', function() {
+describe('Event parser parses events', function() {
     it('without extension', function() {
         var tomorrowOneOclock = tomorrow().hour(1).toDate();
         parser.parse('tomorrow 1:00 foo').should.containDeep({

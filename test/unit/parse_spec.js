@@ -1,6 +1,6 @@
 var q = require('parse');
 
-describe('Date parser', function() {
+describe('Event parser', function() {
     it('assumes an all-day event when no time is given', function() {
         expect(q.parse('foo')).to.be.allDay();
     });

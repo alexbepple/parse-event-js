@@ -1,5 +1,6 @@
 var moment = require('moment');
 var r = require('ramda');
+var m = require('./misc');
 
 var allWeekdays = r.concat(moment.weekdays(), moment.weekdaysShort());
 var allWeekdaysInLowerCase = r.map(r.func('toLowerCase'))(allWeekdays);
@@ -15,6 +16,8 @@ var hasUnusedParsingTokens = function(moment) {
 };
 
 var future = function(dateSpec, reference) {
+    if (r.isEmpty(dateSpec) || !moment(reference).isValid()) return moment.invalid();
+
     var result;
 
     result = moment(dateSpec, 'H:mm');
@@ -24,13 +27,14 @@ var future = function(dateSpec, reference) {
     if (result.isValid() && !hasUnusedInput(result)) return result;
 
     if (isWeekday(dateSpec)) {
-        result = reference || moment();
+        result = reference || moment().startOf('day');
         result.day(dateSpec);
-        result.startOf('day');
         if (!hasUnusedParsingTokens(result)) return result;
     }
 
-    return moment.invalid();
+    var dateSpecTokens = m.split(dateSpec);
+    var tailAsMoment = future(m.join(r.tail(dateSpecTokens)));
+    return future(r.head(dateSpecTokens), tailAsMoment);
 };
 
 module.exports = {

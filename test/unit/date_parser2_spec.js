@@ -47,4 +47,8 @@ describe('New date parser: #future', function() {
             expect(future('01:00 foo')).not.to.be.valid();
         });
     });
+    
+    it('creates date from day of week + time', function() {
+        expect(future('Monday 01:00')).to.be.date(future('mon').hour(1).minutes(0));
+    });
 });
