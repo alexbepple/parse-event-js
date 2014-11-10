@@ -51,4 +51,7 @@ describe('New date parser: #future', function() {
     it('creates date from day of week + time', function() {
         expect(future('Monday 01:00')).to.be.date(future('mon').hour(1).minutes(0));
     });
+    it('creates date from date + time', function() {
+        expect(future('1 Jan 01:00')).to.be.date(future('1 Jan').hour(1).minutes(0));
+    });
 });

@@ -26,6 +26,9 @@ var future = function(dateSpec, reference) {
     result = moment(dateSpec, 'D MMM');
     if (result.isValid() && !hasUnusedInput(result)) return result;
 
+    result = moment(dateSpec, 'D MMM H:mm');
+    if (result.isValid() && !hasUnusedInput(result)) return result;
+
     if (isWeekday(dateSpec)) {
         result = reference || moment().startOf('day');
         result.day(dateSpec);
