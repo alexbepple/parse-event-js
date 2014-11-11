@@ -3,7 +3,7 @@ var moment = require('moment');
 
 describe('New date parser: #future', function() {
     it('technically creates a Moment.js moment', function() {
-        expect(moment.isMoment(future('1 jan'))).to.be.truthy();
+        expect(moment.isMoment(future(''))).to.be.truthy();
     });
 
     describe('creates date from D MMM (day of month and short month)', function() {
@@ -14,6 +14,9 @@ describe('New date parser: #future', function() {
         });
         it('when month in lowercase', function() {
             expect(future('1 jan')).to.be.date(future('1 Jan'));
+        });
+        it('when date not 1st of month', function() {
+            expect(future('2 jan').date()).to.equal(2);
         });
         it('invalidates date when there is superfluous input', function() {
             expect(future('1 jan foo')).not.to.be.valid();
@@ -37,11 +40,23 @@ describe('New date parser: #future', function() {
             var sunday = moment('3000-01-01').day(0);
             expect(future('Monday', sunday.clone())).to.be.after(sunday);
         });
+        it('only future date (variation)', function() {
+            var monday = moment('3000-01-01').day(1);
+            expect(future('Sunday', monday.clone())).to.be.after(monday);
+        });
     });
     
     describe('creates date from time', function() {
         it('', function() {
             expect(future('01:00').hour()).to.equal(1);
+        });
+        it('without seconds', function() {
+            expect(future('1:00')).to.be.date(future('1:00').startOf('minute'));
+        });
+        it('only future date', function() {
+            var oneMinutePastOne = moment().startOf('minute').hour(1).minutes(1);
+            var oneOclockNextDay = oneMinutePastOne.clone().add(1, 'day').minutes(0);
+            expect(future('01:00', oneMinutePastOne)).to.be.date(oneOclockNextDay);
         });
         it('invalidates date when there is superfluous input', function() {
             expect(future('01:00 foo')).not.to.be.valid();
@@ -53,5 +68,9 @@ describe('New date parser: #future', function() {
     });
     it('creates date from date + time', function() {
         expect(future('1 Jan 01:00')).to.be.date(future('1 Jan').hour(1).minutes(0));
+    });
+
+    it('avoids edge cases of Moment.js date parsing', function() {
+        expect(future('Novotel')).not.to.be.valid();
     });
 });
