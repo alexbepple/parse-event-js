@@ -35,7 +35,7 @@ var future = function(dateSpec, reference, mutatedMoment) {
     var token = r.head(tokens);
     var restOfSpec = m.join(r.tail(tokens));
 
-    if (token.startsWith('tom')) {
+    if (token.indexOf('tom') === 0) {
         mutatedMoment.add(1, 'day');
         return future(restOfSpec, reference, mutatedMoment);
     }

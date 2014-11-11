@@ -27,7 +27,7 @@ var noOfTokensThatContainDuration = function (tokens) {
 };
 
 var durationInSeconds = function (tokens) {
-	if (tokens.isEmpty()) return 0;
+    if (r.isEmpty(tokens)) return 0;
 	return juration.parse(m.join(tokens));
 };
 
