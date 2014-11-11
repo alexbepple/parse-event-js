@@ -73,4 +73,11 @@ describe('New date parser: #future', function() {
     it('avoids edge cases of Moment.js date parsing', function() {
         expect(future('Novotel')).not.to.be.valid();
     });
+
+    it('understands convenience term "tomorrow"', function() {
+        expect(future('tomorrow')).to.be.after(moment());
+    });
+    it('and its abbreviation', function() {
+        expect(future('tom')).to.be.date(future('tomorrow'));
+    });
 });

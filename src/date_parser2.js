@@ -33,6 +33,11 @@ var future = function(dateSpec, reference, mutatedMoment) {
     var token = r.head(tokens);
     var restOfSpec = m.join(r.tail(tokens));
 
+    if (token.startsWith('tom')) {
+        mutatedMoment.add(1, 'day');
+        return future(restOfSpec, reference, mutatedMoment);
+    }
+
     var timeComponent = moment(token, 'H:mm');
     if (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)) {
         copy('hours', timeComponent, mutatedMoment);
