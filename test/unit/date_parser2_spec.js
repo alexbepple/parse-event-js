@@ -6,6 +6,10 @@ describe('New date parser: #future', function() {
         expect(moment.isMoment(future(''))).to.be.truthy();
     });
 
+    it('creates invalid date from empty spec', function() {
+        expect(future('')).not.to.be.valid();
+    });
+
     describe('creates date from D MMM (day of month and short month)', function() {
         it('when month in capital case', function() {
             var jan1 = future('1 Jan');
