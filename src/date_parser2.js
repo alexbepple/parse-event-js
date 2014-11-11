@@ -38,6 +38,7 @@ var future = function(dateSpec, reference, mutatedMoment) {
         return future(restOfSpec, reference, mutatedMoment);
     }
 
+    if (/^\d{3}$/.test(token)) token = '0' + token;
     var timeComponent = moment(token, 'H:mm');
     if (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)) {
         copy('hours', timeComponent, mutatedMoment);

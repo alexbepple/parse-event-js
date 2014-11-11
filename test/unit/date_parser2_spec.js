@@ -80,4 +80,13 @@ describe('New date parser: #future', function() {
     it('and its abbreviation', function() {
         expect(future('tom')).to.be.date(future('tomorrow'));
     });
+
+    describe('understands times as groups of digits without separator', function() {
+        it('like 0100', function() {
+            expect(future('0100')).to.be.date(future('01:00'));
+        });
+        it('like 100', function() {
+            expect(future('100')).to.be.date(future('1:00'));
+        });
+    });
 });
