@@ -21,7 +21,8 @@ var hasUnusedParsingTokens = function(moment) {
 };
 
 var copy = function(unit, from, to) {
-    to[unit].call(to, from[unit].call(from));
+    var unitAccessor = r.func(unit);
+    unitAccessor(to, unitAccessor(from));
 };
 
 var future = function(dateSpec, reference, mutatedMoment) {
