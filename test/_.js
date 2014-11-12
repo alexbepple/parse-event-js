@@ -17,3 +17,6 @@ Assertion.addMethod('truthy', function() {
 Assertion.addMethod('beUndefined', function() {
 	new Assertion(this._obj).to.be.undefined;
 });
+Assertion.addMethod('beNull', function() {
+	new Assertion(this._obj).to.be.null;
+});
