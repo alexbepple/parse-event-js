@@ -2,13 +2,14 @@ var moment = require('moment');
 var r = require('ramda');
 var m = require('./misc');
 
+var toLowerCase = r.map(r.func('toLowerCase'));
 var allMonths = r.concat(moment.months(), moment.monthsShort());
-var allMonthsInLowerCase = r.map(r.func('toLowerCase'))(allMonths);
+var allMonthsInLowerCase = toLowerCase(allMonths);
 var isMonth = function(dateSpec) {
     return r.contains(dateSpec.toLowerCase())(allMonthsInLowerCase);
 };
 var allWeekdays = r.concat(moment.weekdays(), moment.weekdaysShort());
-var allWeekdaysInLowerCase = r.map(r.func('toLowerCase'))(allWeekdays);
+var allWeekdaysInLowerCase = toLowerCase(allWeekdays);
 var isWeekday = function(dateSpec) {
     return r.contains(dateSpec.toLowerCase())(allWeekdaysInLowerCase);
 };
