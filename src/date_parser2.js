@@ -42,7 +42,7 @@ var future = function(dateSpec, reference, mutatedMoment) {
         return future(restOfSpec, reference, mutatedMoment);
     }
 
-    if (token === 'eob') token = '23:59';
+    if (token === 'eod') token = '23:59';
     if (/^\d{3}$/.test(token)) token = '0' + token;
     var timeComponent = moment(token, 'H:mm');
     if (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)) {
@@ -83,7 +83,7 @@ var specifiesTime = function (dateSpec) {
 
     var isTime = function (token) {
         // copied code
-        if (token === 'eob') token = '23:59';
+        if (token === 'eod') token = '23:59';
         if (/^\d{3}$/.test(token)) token = '0' + token;
         var timeComponent = moment(token, 'H:mm');
         return (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent));

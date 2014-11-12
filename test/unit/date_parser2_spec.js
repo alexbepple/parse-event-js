@@ -115,8 +115,8 @@ describe('Date parser: #future', function() {
         expect(future('tom')).to.be.date(future('tomorrow'));
     });
 
-    it("understands convenience term 'eob'", function() {
-        expect(future('eob')).to.be.date(future('23:59'));
+    it("understands convenience term 'eod'", function() {
+        expect(future('eod')).to.be.date(future('23:59'));
     });
 });
 
