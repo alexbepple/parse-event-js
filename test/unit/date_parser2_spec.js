@@ -10,55 +10,82 @@ describe('New date parser: #future', function() {
         expect(future('')).not.to.be.valid();
     });
 
-    describe('creates date from D MMM (day of month and short month)', function() {
-        it('when month in capital case', function() {
-            var jan1 = future('1 Jan');
-            expect(jan1.date()).to.equal(1);
-            expect(jan1.month()).to.equal(0);
+    it('creates invalid date from unparseable spec', function() {
+        expect(future('foo')).not.to.be.valid();
+    });
+
+    describe('creates date from day of month', function() {
+        it('', function() {
+            expect(future('1').date()).to.equal(1);
         });
-        it('when month in lowercase', function() {
-            expect(future('1 jan')).to.be.date(future('1 Jan'));
+        it('in the reference month', function() {
+            expect(future('2', moment('2010-01-01')).month()).to.equal(0);
         });
-        it('when date not 1st of month', function() {
-            expect(future('2 jan').date()).to.equal(2);
+        it('advancing to next month for today’s day of month', function() {
+            expect(future('1', moment('2010-01-01')).month()).to.equal(1);
         });
-        it('invalidates date when there is superfluous input', function() {
-            expect(future('1 jan foo')).not.to.be.valid();
+    });
+
+    describe('creates date from month', function() {
+        it('from capital case and long form', function() {
+            expect(future('January').month()).to.equal(0);
+        });
+        it('from lower case', function() {
+            expect(future('january').month()).to.equal(0);
+        });
+        it('from short form', function() {
+            expect(future('jan').month()).to.equal(0);
+        });
+        it('in the reference year', function() {
+            expect(future('feb', moment('2010-01-01')).year()).to.equal(2010);
+        });
+        it('advancing to next year for current month', function() {
+            expect(future('jan', moment('2010-01-01')).year()).to.equal(2011);
         });
     });
 
     describe('creates date from day of week', function() {
-        it('when day given in capital case', function() {
+        it('from capital case and long form', function() {
             expect(future('Monday').day()).to.equal(1);
         });
-        it('when day given in lowercase', function() {
+        it('from lower case', function() {
             expect(future('monday').day()).to.equal(1);
         });
-        it('when day is abbreviated', function() {
+        it('from short form', function() {
             expect(future('mon').day()).to.equal(1);
         });
         it('at start of day', function() {
-            expect(future('Monday')).to.be.date(future('Monday').startOf('day'));
+            expect(future('mon')).to.be.date(future('mon').startOf('day'));
         });
-        it('only future date', function() {
-            var sunday = moment('3000-01-01').day(0);
-            expect(future('Monday', sunday.clone())).to.be.after(sunday);
+        it('in same week', function () {
+            var monday = moment().day(1);
+            expect(future('tue', monday.clone()).date()).to.equal(monday.date()+1);
         });
-        it('only future date (variation)', function() {
-            var monday = moment('3000-01-01').day(1);
-            expect(future('Sunday', monday.clone())).to.be.after(monday);
+        it('advancing a week for today’s day of week', function() {
+            var monday = moment().day(1);
+            expect(future('mon', monday.clone()).date()).to.equal(monday.date()+7);
         });
     });
     
     describe('creates date from time', function() {
-        it('', function() {
+        it('like 01:00', function() {
             expect(future('01:00').hour()).to.equal(1);
+        });
+        it('like 0100', function() {
+            expect(future('0100')).to.be.date(future('01:00'));
+        });
+        it('like 100', function() {
+            expect(future('100')).to.be.date(future('1:00'));
         });
         it('without seconds', function() {
             expect(future('1:00')).to.be.date(future('1:00').startOf('minute'));
         });
-        it('only future date', function() {
-            var oneMinutePastOne = moment().startOf('minute').hour(1).minutes(1);
+        it('on same day', function() {
+            var oneOclock = moment().hour(1).minutes(0);
+            expect(future('1:01', oneOclock.clone()).date()).to.equal(oneOclock.date());
+        });
+        it('advancing to next day for current time', function() {
+            var oneMinutePastOne = moment().startOf('minute').hour(1).minutes(0);
             var oneOclockNextDay = oneMinutePastOne.clone().add(1, 'day').minutes(0);
             expect(future('01:00', oneMinutePastOne)).to.be.date(oneOclockNextDay);
         });
@@ -67,11 +94,13 @@ describe('New date parser: #future', function() {
         });
     });
     
-    it('creates date from day of week + time', function() {
-        expect(future('Monday 01:00')).to.be.date(future('mon').hour(1).minutes(0));
-    });
-    it('creates date from date + time', function() {
-        expect(future('1 Jan 01:00')).to.be.date(future('1 Jan').hour(1).minutes(0));
+    describe('creates date from combination of', function() {
+        it('day of week + time', function() {
+            expect(future('mon 01:00')).to.be.date(future('mon').hour(1).minutes(0));
+        });
+        it('date + time', function() {
+            expect(future('1 jan 01:00')).to.be.date(future('1 jan').hour(1).minutes(0));
+        });
     });
 
     it('avoids edge cases of Moment.js date parsing', function() {
@@ -83,14 +112,5 @@ describe('New date parser: #future', function() {
     });
     it('and its abbreviation', function() {
         expect(future('tom')).to.be.date(future('tomorrow'));
-    });
-
-    describe('understands times as groups of digits without separator', function() {
-        it('like 0100', function() {
-            expect(future('0100')).to.be.date(future('01:00'));
-        });
-        it('like 100', function() {
-            expect(future('100')).to.be.date(future('1:00'));
-        });
     });
 });
