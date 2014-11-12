@@ -1,7 +1,8 @@
 var future = require('date_parser2').future;
+var specifiesTime = require('date_parser2').specifiesTime;
 var moment = require('moment');
 
-describe('New date parser: #future', function() {
+describe('Date parser: #future', function() {
     it('technically creates a Moment.js moment', function() {
         expect(moment.isMoment(future(''))).to.be.truthy();
     });
@@ -112,5 +113,21 @@ describe('New date parser: #future', function() {
     });
     it('and its abbreviation', function() {
         expect(future('tom')).to.be.date(future('tomorrow'));
+    });
+
+    it("understands convenience term 'eob'", function() {
+        expect(future('eob')).to.be.date(future('23:59'));
+    });
+});
+
+describe('Date parser: #specifiesTime', function() {
+    it('recognizes a time at beginning', function() {
+        expect(specifiesTime('00:00')).to.beTrue();
+    });
+    it('recognizes a time not at beginning', function() {
+        expect(specifiesTime('tom 00:00')).to.beTrue();
+    });
+    it('recognizes when no time is specified', function() {
+        expect(specifiesTime('')).to.beFalse();
     });
 });

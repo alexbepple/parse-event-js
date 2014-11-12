@@ -5,10 +5,7 @@ var juration = require('juration/juration');
 var Event = require('./event');
 var detectStart = require('./date_detector').detect;
 var detectEnd = require('./end_detector').detector(detectStart);
-
-var containsTime = function (input) {
-	return (/\d{1,2}:?\d{2}/).test(input);
-};
+var dateParser = require('./date_parser2');
 
 var noOfTokensThatContainDuration = function (tokens) {
 	var doesThisNumberOfTokensContainDuration = r.range(0, tokens.length).map(function (n) {
@@ -38,7 +35,7 @@ var parse = function (input) {
         start: startMatch.date,
         end:   endMatch.date,
 		durationInSeconds: durationInSeconds(r.take(noOfTokensForDuration, tokensAfterEnd)),
-		isAllDay: !containsTime(input),
+		isAllDay: !dateParser.specifiesTime(input),
         title: m.join(r.skip(noOfTokensForDuration, tokensAfterEnd))
     });
 };

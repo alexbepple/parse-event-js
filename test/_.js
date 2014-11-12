@@ -11,7 +11,13 @@ Assertion.addMethod('containDeep', function(tree) {
 Assertion.addMethod('falsy', function() {
 	new Assertion(this._obj).to.be.false;
 });
+Assertion.addMethod('beFalse', function() {
+	new Assertion(this._obj).to.be.false;
+});
 Assertion.addMethod('truthy', function() {
+	new Assertion(this._obj).to.be.true;
+});
+Assertion.addMethod('beTrue', function() {
 	new Assertion(this._obj).to.be.true;
 });
 Assertion.addMethod('beUndefined', function() {
