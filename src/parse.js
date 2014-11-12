@@ -7,11 +7,7 @@ var detectStart = require('./date_detector').detect;
 var detectEnd = require('./end_detector').detector(detectStart);
 
 var containsTime = function (input) {
-	return (/\d{1,2}:\d{2}/).test(input);
-};
-var disambiguateTimes = function (input) {
-	// this is a duplication of logic in date_detector
-    return input.replace(/(\d{1,2})(\d{2})/, '$1:$2');
+	return (/\d{1,2}:?\d{2}/).test(input);
 };
 
 var noOfTokensThatContainDuration = function (tokens) {
@@ -48,6 +44,6 @@ var parse = function (input) {
 };
 
 module.exports = {
-    parse: r.pipe(disambiguateTimes, parse)
+    parse: parse
 };
 
