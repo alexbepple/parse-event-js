@@ -3,8 +3,8 @@ var m = require('./misc');
 
 var juration = require('juration/juration');
 var Event = require('./event');
-var detectStart = require('./date_detector').detect;
-var detectEnd = require('./end_detector').detector(detectStart);
+var detectDate = require('./date_detector').detect;
+var detectEnd = require('./end_detector').detector(detectDate);
 var dateParser = require('./date_parser2');
 
 var noOfTokensThatContainDuration = function (tokens) {
@@ -25,7 +25,7 @@ var durationInSeconds = function (tokens) {
 };
 
 var parse = function (input) {
-	var startMatch = detectStart(input);
+	var startMatch = detectDate(input);
 	var endMatch = detectEnd(startMatch.tail);
 
 	var tokensAfterEnd = m.split(endMatch.tail);
