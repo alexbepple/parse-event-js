@@ -3,9 +3,11 @@ var m = require('./misc');
 
 var juration = require('juration/juration');
 var Event = require('./event');
-var detectDate = require('./date_detector').detect;
-var detectEnd = require('./end_detector').detector(detectDate);
+
 var dateParser = require('./date_parser2');
+var detectDate = require('./date_detector').detector(dateParser);
+var detectEnd = require('./end_detector').detector(detectDate);
+
 
 var noOfTokensThatContainDuration = function (tokens) {
 	var doesThisNumberOfTokensContainDuration = r.range(0, tokens.length).map(function (n) {

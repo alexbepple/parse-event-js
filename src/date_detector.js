@@ -1,26 +1,34 @@
 var moment = require('moment');
 var r = require('ramda');
 var m = require('./misc');
-var dateParser2 = require('./date_parser2');
 
-var noOfTokensThatContainDate = function (tokens) {
-    var now = moment();
-    var takeX = function (_, idx, array) { return r.take(idx+1, array); };
-    var makeForValidDate = function (tokens) {
-        var aMoment = moment(createDateFromTokens(tokens));
-        return aMoment.isValid();
+var detector = function (dateParser, input) {
+    var noOfTokensThatContainDate = function (tokens) {
+        var now = moment();
+        var takeX = function (_, idx, array) { return r.take(idx+1, array); };
+        var makeForValidDate = function (tokens) {
+            var aMoment = moment(createDateFromTokens(tokens));
+            return aMoment.isValid();
+        };
+        var firstTokensThatContainDate = r.pipe(
+            r.map.idx(takeX), r.takeWhile(makeForValidDate));
+            return firstTokensThatContainDate(tokens).length;
     };
-    var firstTokensThatContainDate = r.pipe(
-        r.map.idx(takeX), r.takeWhile(makeForValidDate));
-    return firstTokensThatContainDate(tokens).length;
-};
 
-var createDate = function (dateSpec) {
-    return dateParser2.future(dateSpec).toDate();
-};
-var createDateFromTokens = r.pipe(m.join, createDate);
+    var createDate = function (dateSpec) {
+        return dateParser.future(dateSpec).toDate();
+    };
+    var createDateFromTokens = r.pipe(m.join, createDate);
 
-var detectDate = function (input) {
+    var detectDate = function (input) {
+        var tokens = m.split(input);
+        var noOfTokensForDate = noOfTokensThatContainDate(tokens);
+        return {
+            date: createDateFromTokens(r.take(noOfTokensForDate, tokens)),
+            tail: m.join(r.skip(noOfTokensForDate, tokens))
+        };
+    };
+
     var tokens = m.split(input);
     var noOfTokensForDate = noOfTokensThatContainDate(tokens);
 	return {
@@ -30,5 +38,6 @@ var detectDate = function (input) {
 };
 
 module.exports = {
-	detect: detectDate
+    detector: r.curry(detector)
 };
+
