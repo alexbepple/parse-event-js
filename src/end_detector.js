@@ -5,7 +5,7 @@ var r = require('ramda');
 var endDetector = function(detectDate, input, reference) {
     var skipFirstToken = r.pipe(m.split, r.skip(1), m.join);
     var endMatch = detectDate(skipFirstToken(input), reference);
-    if (!moment(endMatch.date).isValid()) endMatch.tail = input;
+    if (!endMatch.date.isValid()) endMatch.tail = input;
     return endMatch;
 };
 

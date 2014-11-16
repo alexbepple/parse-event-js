@@ -8,7 +8,7 @@ describe('Event', function() {
         Event({start: start}).should.start(startClone);
     });
     it('disregards an invalid end', function() {
-        Event({start: start, end: h.invalidDate()}).should.end(startClone);
+        Event({start: start, end: moment.invalid().toDate()}).should.end(startClone);
     });
 });
 

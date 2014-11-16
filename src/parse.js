@@ -29,14 +29,14 @@ var durationInSeconds = function (tokens) {
 
 var parse = function (input) {
 	var startMatch = detectDate(input, moment());
-	var endMatch = detectEnd(startMatch.tail, moment(startMatch.date));
+	var endMatch = detectEnd(startMatch.tail, startMatch.date);
 
 	var tokensAfterEnd = m.split(endMatch.tail);
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterEnd);
 	
     return Event({
-        start: startMatch.date,
-        end:   endMatch.date,
+        start: startMatch.date.toDate(),
+        end:   endMatch.date.toDate(),
 		durationInSeconds: durationInSeconds(r.take(noOfTokensForDuration, tokensAfterEnd)),
 		isAllDay: !dateParser.specifiesTime(input),
         title: m.join(r.skip(noOfTokensForDuration, tokensAfterEnd))

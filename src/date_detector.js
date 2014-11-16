@@ -6,17 +6,14 @@ var detector = function (dateParser, input, reference) {
     var noOfTokensThatContainDate = function (tokens) {
         var now = moment();
         var takeX = function (_, idx, array) { return r.take(idx+1, array); };
-        var makeForValidDate = function (tokens) {
-            var aMoment = moment(createDateFromTokens(tokens));
-            return aMoment.isValid();
-        };
+        var makeForValidDate = r.pipe(createDateFromTokens, r.func('isValid'));
         var firstTokensThatContainDate = r.pipe(
             r.map.idx(takeX), r.takeWhile(makeForValidDate));
             return firstTokensThatContainDate(tokens).length;
     };
 
     var createDate = function (dateSpec) {
-        return dateParser.future(dateSpec, reference).toDate();
+        return dateParser.future(dateSpec, reference);
     };
     var createDateFromTokens = r.pipe(m.join, createDate);
 
