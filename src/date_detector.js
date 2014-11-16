@@ -4,12 +4,11 @@ var m = require('./misc');
 
 var detector = function (dateParser, input, reference) {
     var noOfTokensThatContainDate = function (tokens) {
-        var now = moment();
         var takeX = function (_, idx, array) { return r.take(idx+1, array); };
         var makeForValidDate = r.pipe(createDateFromTokens, r.func('isValid'));
-        var firstTokensThatContainDate = r.pipe(
+        var leadingTokensThatContainDate = r.pipe(
             r.map.idx(takeX), r.takeWhile(makeForValidDate));
-            return firstTokensThatContainDate(tokens).length;
+        return leadingTokensThatContainDate(tokens).length;
     };
 
     var createDate = function (dateSpec) {

@@ -16,7 +16,6 @@ var noOfTokensThatContainDuration = function (tokens) {
 			juration.parse(m.join(r.take(n+1, tokens)));
 			return true;
 		} catch (err) {
-			return false;
 		}
 	});
 	return doesThisNumberOfTokensContainDuration.lastIndexOf(true) + 1;
