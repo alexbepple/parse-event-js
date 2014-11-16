@@ -7,12 +7,13 @@ describe('Date parser: #future', function() {
         expect(moment.isMoment(future(''))).to.be.truthy();
     });
 
-    it('creates invalid date from empty spec', function() {
-        expect(future('')).not.to.be.valid();
-    });
-
-    it('creates invalid date from unparseable spec', function() {
-        expect(future('foo')).not.to.be.valid();
+    describe('creates invalid date', function() {
+        it('from empty spec', function() {
+            expect(future('')).not.to.be.valid();
+        });
+        it('from unparseable spec', function() {
+            expect(future('foo')).not.to.be.valid();
+        });
     });
 
     describe('creates date from day of month', function() {
