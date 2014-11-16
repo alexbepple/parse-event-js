@@ -20,15 +20,6 @@ var detector = function (dateParser, input) {
     };
     var createDateFromTokens = r.pipe(m.join, createDate);
 
-    var detectDate = function (input) {
-        var tokens = m.split(input);
-        var noOfTokensForDate = noOfTokensThatContainDate(tokens);
-        return {
-            date: createDateFromTokens(r.take(noOfTokensForDate, tokens)),
-            tail: m.join(r.skip(noOfTokensForDate, tokens))
-        };
-    };
-
     var tokens = m.split(input);
     var noOfTokensForDate = noOfTokensThatContainDate(tokens);
 	return {
