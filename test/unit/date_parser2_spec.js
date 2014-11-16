@@ -8,8 +8,8 @@ describe('Date parser: #future', function() {
     });
 
     describe('creates invalid date', function() {
-        it('from empty spec', function() {
-            expect(future('')).not.to.be.valid();
+        it('from empty spec with reference date', function() {
+            expect(future('', moment())).not.to.be.valid();
         });
         it('from unparseable spec', function() {
             expect(future('foo')).not.to.be.valid();

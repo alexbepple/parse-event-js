@@ -7,11 +7,11 @@ describe('End detector', function() {
 	it('returns date from date detector using input minus 1st token', function() {
 		var dateFromDateDetector = moment().toDate();
 		var dateDetectorStub = sinon.stub();
-		dateDetectorStub.withArgs('bar').returns({date: dateFromDateDetector});
+		dateDetectorStub.withArgs('bar', 'reference').returns({date: dateFromDateDetector});
 		dateDetectorStub.returns({date: "'wrong input for date detector'"});
 		var detectEnd = end.detector(dateDetectorStub);
 
-		detectEnd('foo bar').date.should.equal(dateFromDateDetector);
+		detectEnd('foo bar', 'reference').date.should.equal(dateFromDateDetector);
 	});
 	it('uses tail of date detector when it finds a date', function() {
 		var resultWithValidDate = {
@@ -19,7 +19,7 @@ describe('End detector', function() {
 			tail: 'tail from date detector'
 		};
 		detectEnd = end.detector(function() {return resultWithValidDate;});
-		detectEnd('input').tail.should.equal('tail from date detector');
+		detectEnd('input', null).tail.should.equal('tail from date detector');
 	});
 	it('returns the input as the tail when it cannot find a date', function() {
 		var dateDetectorResultWithInvalidDate = {
@@ -30,6 +30,6 @@ describe('End detector', function() {
 			return dateDetectorResultWithInvalidDate;
 		});
 
-		detectEnd('input').tail.should.equal('input');
+		detectEnd('input', null).tail.should.equal('input');
 	});
 });

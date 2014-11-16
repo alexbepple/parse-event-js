@@ -25,7 +25,7 @@ describe('Event parser parses events', function() {
     });
 
     it('with explicit end', function() {
-        parser.parse('tomorrow 1:00 to tomorrow 2:00 foo').should.containDeep(tomorrowFromOneToTwo);
+        parser.parse('tomorrow 1:00 to 2:00 foo').should.containDeep(tomorrowFromOneToTwo);
     });
 
     it('all-day events', function() {

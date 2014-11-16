@@ -2,7 +2,7 @@ var moment = require('moment');
 var r = require('ramda');
 var m = require('./misc');
 
-var detector = function (dateParser, input) {
+var detector = function (dateParser, input, reference) {
     var noOfTokensThatContainDate = function (tokens) {
         var now = moment();
         var takeX = function (_, idx, array) { return r.take(idx+1, array); };
@@ -16,7 +16,7 @@ var detector = function (dateParser, input) {
     };
 
     var createDate = function (dateSpec) {
-        return dateParser.future(dateSpec).toDate();
+        return dateParser.future(dateSpec, reference).toDate();
     };
     var createDateFromTokens = r.pipe(m.join, createDate);
 

@@ -1,4 +1,5 @@
 var r = require('ramda');
+var moment = require('moment');
 var m = require('./misc');
 
 var juration = require('juration/juration');
@@ -27,8 +28,8 @@ var durationInSeconds = function (tokens) {
 };
 
 var parse = function (input) {
-	var startMatch = detectDate(input);
-	var endMatch = detectEnd(startMatch.tail);
+	var startMatch = detectDate(input, moment());
+	var endMatch = detectEnd(startMatch.tail, moment(startMatch.date));
 
 	var tokensAfterEnd = m.split(endMatch.tail);
 	var noOfTokensForDuration = noOfTokensThatContainDuration(tokensAfterEnd);

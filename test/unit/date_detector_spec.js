@@ -9,12 +9,12 @@ describe('Date detector', function() {
         var rightDate = moment('2010-01-01');
 
         var futureStub = sinon.stub();
-        futureStub.withArgs('date').returns(wrongDate);
-        futureStub.withArgs('date spec').returns(rightDate);
+        futureStub.withArgs('date', 'reference').returns(wrongDate);
+        futureStub.withArgs('date spec', 'reference').returns(rightDate);
         futureStub.returns(moment.invalid());
         var dateParserStub = {future: futureStub};
 
-        var dateMatch = x.detector(dateParserStub, 'date spec foo');
+        var dateMatch = x.detector(dateParserStub, 'date spec foo', 'reference');
 		expect(dateMatch.date).to.be.date(rightDate);
         expect(dateMatch.tail).to.equal('foo');
 	});

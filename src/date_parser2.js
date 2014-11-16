@@ -27,7 +27,7 @@ var copy = function(unit, from, to) {
 };
 
 var future = function(dateSpec, reference, mutatedMoment) {
-    if (r.isEmpty(dateSpec) && reference === undefined) return moment.invalid();
+    if (r.isEmpty(dateSpec) && mutatedMoment === undefined) return moment.invalid();
 
     reference = reference || moment();
     mutatedMoment = mutatedMoment || reference.clone().startOf('day');

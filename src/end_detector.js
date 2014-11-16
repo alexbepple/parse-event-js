@@ -2,10 +2,9 @@ var moment = require('moment');
 var m = require('./misc');
 var r = require('ramda');
 
-var endDetector = function(detectDate, input) {
+var endDetector = function(detectDate, input, reference) {
     var skipFirstToken = r.pipe(m.split, r.skip(1), m.join);
-    var detectEnd = r.pipe(skipFirstToken, detectDate);
-    var endMatch = detectEnd(input);
+    var endMatch = detectDate(skipFirstToken(input), reference);
     if (!moment(endMatch.date).isValid()) endMatch.tail = input;
     return endMatch;
 };
