@@ -9,3 +9,4 @@ lcov.info
 # temporary, while I have both JavaScript & LiveScript
 src/misc.js
 src/event.js
+src/format.js
