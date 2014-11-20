@@ -5,13 +5,14 @@ lsc := $(bin)/lsc
 .PHONY: test
 test:
 	NODE_PATH=src $(run_tests) --reporter mocha-unfunk-reporter
+continuously-test:
+	$(bin)/nodemon --exec 'make test' --ext js
 
 continuously-compile-src:
 	$(lsc) -wco src src-ls
 
-tdd: test-unit-continuously
-test-unit-continuously:
-	$(bin)/nodemon --exec 'make test' --ext js
+tdd:
+	bundle exec foreman start -f Procfile.tdd
 
 INSTRUMENTED := src-instrumented
 clean-instrument-src:
