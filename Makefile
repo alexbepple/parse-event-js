@@ -3,15 +3,17 @@ run_tests := $(bin)/mocha --check-leaks --recursive test
 lsc := $(bin)/lsc
 
 .PHONY: test
-test:
+test: compile-src
 	NODE_PATH=src $(run_tests) --reporter mocha-unfunk-reporter
 continuously-test:
 	$(bin)/nodemon --exec 'make test' --ext js
 
+compile-src:
+	$(lsc) -co src src-ls $(args)
 continuously-compile-src:
-	$(lsc) -wco src src-ls
+	make compile-src args=-w
 
-tdd:
+tdd: compile-src
 	bundle exec foreman start -f Procfile.tdd
 
 INSTRUMENTED := src-instrumented
