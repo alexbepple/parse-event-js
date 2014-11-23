@@ -2,16 +2,16 @@
   "private": true,
   "devDependencies": {
     "mocha": "~2.0.1",
-    "chai": "~1.9.1",
+    "chai": "~1.10.0",
     "mocha-unfunk-reporter": "~0.4.0",
     "nodemon": "~1.2.1",
-    "napa": "~0.4.1",
+    "napa": "~1.0.2",
     "chai-shallow-deep-equal": "~1.0.0",
     "mocha-istanbul": "~0.2.0",
     "codeclimate-test-reporter": "0.0.4",
     "istanbul": "~0.3.2",
     "sinon-chai": "~2.6.0",
-    "sinon": "~1.11.1"
+    "sinon": "~1.12.1"
   },
   "dependencies": {
     "ramda": "~0.7.2",
