@@ -61,11 +61,11 @@ describe('Date parser: #future', function() {
         });
         it('in same week', function () {
             var monday = moment().day(1);
-            expect(future('tue', monday.clone()).date()).to.equal(monday.date()+1);
+            expect(future('tue', monday.clone()).date()).to.equal(monday.add(1, 'day').date());
         });
         it('advancing a week for today’s day of week', function() {
             var monday = moment().day(1);
-            expect(future('mon', monday.clone()).date()).to.equal(monday.date()+7);
+            expect(future('mon', monday.clone()).date()).to.equal(monday.add(7, 'days').date());
         });
     });
     
