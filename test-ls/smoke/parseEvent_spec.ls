@@ -1,4 +1,5 @@
 require! {
+    chai: {expect}
     child_process: {exec}
     ramda: r
 }
