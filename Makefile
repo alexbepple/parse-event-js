@@ -3,10 +3,15 @@ run_tests := $(bin)/mocha --check-leaks --recursive test
 lsc := $(bin)/lsc
 
 .PHONY: test
-test: compile-src
+test: compile-src compile-test
 	NODE_PATH=src $(run_tests) --reporter mocha-unfunk-reporter
 continuously-test:
 	$(bin)/nodemon --exec 'make test' --ext js
+
+compile-test:
+	$(lsc) -co test test-ls $(args)
+continuously-compile-test:
+	make compile-test args=-w
 
 compile-src:
 	$(lsc) -co src src-ls $(args)

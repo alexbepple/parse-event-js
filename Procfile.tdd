@@ -1,2 +1,3 @@
-src: make continuously-compile-src
+compile-src: make continuously-compile-src
+compile-test: make continuously-compile-test
 tdd: make continuously-test
