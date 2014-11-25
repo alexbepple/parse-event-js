@@ -23,7 +23,7 @@ Assertion.addMethod('beTrue', ->
 Assertion.addMethod('beUndefined', ->
 	new Assertion(this._obj).to.be.undefined;
 );
-Assertion.addMethod('beNull', ->
-	new Assertion(this._obj).to.be.null;
-);
+
+Assertion.addMethod 'beNull', ->
+	@null
 
