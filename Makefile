@@ -12,7 +12,7 @@ clean-test:
 compile-test:
 	mkdir -p test
 	cp -R test-js/* test
-	$(lsc) -co test test-ls $(args)
+	$(lsc) -bco test test-ls $(args)
 continuously-compile-test:
 	make compile-test args=-w
 
@@ -21,7 +21,7 @@ clean-src:
 compile-src:
 	mkdir -p src
 	cp -R src-js/* src
-	$(lsc) -co src src-ls $(args)
+	$(lsc) -bco src src-ls $(args)
 continuously-compile-src:
 	make compile-src args=-w
 
