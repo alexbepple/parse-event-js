@@ -7,20 +7,30 @@ run-tests:
 continuously-run-tests:
 	$(bin)/nodemon --exec 'make run-tests' --ext js
 
+clean-test:
+	rm -rf test
 compile-test:
+	mkdir -p test
+	cp -R test-js/* test
 	$(lsc) -co test test-ls $(args)
 continuously-compile-test:
 	make compile-test args=-w
 
+clean-src:
+	rm -rf src
 compile-src:
+	mkdir -p src
+	cp -R src-js/* src
 	$(lsc) -co src src-ls $(args)
 continuously-compile-src:
 	make compile-src args=-w
 
+clean: clean-test clean-src
+compile: compile-test compile-src
+
 .PHONY: test
-test: compile-src compile-test
-	make run-tests
-tdd: compile-src compile-test
+test: clean compile run-tests
+tdd: clean compile
 	bundle exec foreman start -f Procfile.tdd
 
 

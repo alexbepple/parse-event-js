@@ -7,8 +7,5 @@ lcov-report/
 lcov.info
 
 # temporary, while I have both JavaScript & LiveScript
-src/misc.js
-src/event.js
-src/format.js
-test/smoke/parseEvent_spec.js
-test/_.js
+src/
+test/
