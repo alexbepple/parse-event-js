@@ -7,8 +7,8 @@ require! {
 describe 'parseEvent binary' ->
     specify 'exits with error code 0', (done) ->
         parseEventBin = '/usr/bin/env node src/parseEvent.js ""'
-        minimalEnv = r.pick(['PATH', 'PWD'])(process.env)
+        minimalEnv = process.env |> r.pick ['PATH']
         exec parseEventBin, {env: minimalEnv}, (error) ->
-            expect(error).to.beNull()
+            expect error .to.beNull()
             done()
 
