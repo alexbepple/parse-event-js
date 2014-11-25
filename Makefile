@@ -2,11 +2,10 @@ bin := $(shell npm bin)
 run_tests := $(bin)/mocha --check-leaks --recursive test
 lsc := $(bin)/lsc
 
-.PHONY: test
-test: compile-src compile-test
+run-tests:
 	NODE_PATH=src $(run_tests) --reporter mocha-unfunk-reporter
-continuously-test:
-	$(bin)/nodemon --exec 'make test' --ext js
+continuously-run-tests:
+	$(bin)/nodemon --exec 'make run-tests' --ext js
 
 compile-test:
 	$(lsc) -co test test-ls $(args)
@@ -18,8 +17,12 @@ compile-src:
 continuously-compile-src:
 	make compile-src args=-w
 
-tdd: compile-src
+.PHONY: test
+test: compile-src compile-test
+	make run-tests
+tdd: compile-src compile-test
 	bundle exec foreman start -f Procfile.tdd
+
 
 INSTRUMENTED := src-instrumented
 clean-instrument-src:
