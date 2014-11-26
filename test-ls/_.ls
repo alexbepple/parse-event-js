@@ -12,13 +12,6 @@ chai.use (_, utils) ->
 				return @shallowDeepEqual
 			_super.call this
 
-
-#Assertion.overwriteMethod 'contain', (_super) ->
-	#(contained) !->
-		##if utils.flag(this, 'deep')
-			##@shallowDeepEqual contained
-		#_super.apply this, arguments
-
 Assertion.addMethod 'beFalse', ->
 	@false
 
