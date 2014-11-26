@@ -5,32 +5,42 @@ lsc := $(bin)/lsc
 run-tests:
 	NODE_PATH=src $(run_tests) --reporter mocha-unfunk-reporter
 continuously-run-tests:
-	$(bin)/nodemon --exec 'make run-tests' --ext js
+	$(bin)/nodemon --exec 'make run-tests' --ext js --watch src/ --watch test/
 
 clean-test:
 	rm -rf test
-compile-test:
+copy-test-js:
 	mkdir -p test
 	cp -R test-js/* test
+continuously-copy-test-js:
+	$(bin)/nodemon --exec 'make copy-test-js' --watch test-js/
+compile-test-ls:
+	mkdir -p test
 	$(lsc) -bco test test-ls $(args)
-continuously-compile-test:
-	make compile-test args=-w
+continuously-compile-test-ls:
+	make compile-test-ls args=-w
+assemble-test: copy-test-js compile-test-ls
 
 clean-src:
 	rm -rf src
-compile-src:
+copy-src-js:
 	mkdir -p src
 	cp -R src-js/* src
+continuously-copy-src-js:
+	$(bin)/nodemon --exec 'make copy-src-js' --watch src-js/
+compile-src-ls:
+	mkdir -p src
 	$(lsc) -bco src src-ls $(args)
-continuously-compile-src:
-	make compile-src args=-w
+continuously-compile-src-ls:
+	make compile-src-ls args=-w
+assemble-src: copy-src-js compile-src-ls
 
 clean: clean-test clean-src
-compile: compile-test compile-src
+assemble: assemble-src assemble-test
 
 .PHONY: test
-test: clean compile run-tests
-tdd: clean compile
+test: clean assemble run-tests
+tdd: clean assemble
 	bundle exec foreman start -f Procfile.tdd
 
 
