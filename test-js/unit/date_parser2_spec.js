@@ -4,7 +4,7 @@ var moment = require('moment');
 
 describe('Date parser: #future', function() {
     it('technically creates a Moment.js moment', function() {
-        expect(moment.isMoment(future(''))).to.be.truthy();
+        expect(moment.isMoment(future(''))).to.beTrue();
     });
 
     describe('creates invalid date', function() {

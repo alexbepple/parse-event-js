@@ -14,15 +14,12 @@ Assertion.addMethod 'falsy', ->
 Assertion.addMethod 'beFalse', ->
 	new Assertion(this._obj).to.be.false
 
-Assertion.addMethod('truthy', ->
-	new Assertion(this._obj).to.be.true;
-);
-Assertion.addMethod('beTrue', ->
-	new Assertion(this._obj).to.be.true;
-);
-Assertion.addMethod('beUndefined', ->
+Assertion.addMethod 'beTrue', ->
+	@true
+
+Assertion.addMethod 'beUndefined', ->
 	new Assertion(this._obj).to.be.undefined;
-);
+
 
 Assertion.addMethod 'beNull', ->
 	@null
