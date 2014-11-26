@@ -5,8 +5,19 @@ global.expect = chai.expect
 Assertion = chai.Assertion;
 
 chai.use require('chai-shallow-deep-equal')
-Assertion.addMethod 'containDeep', (tree) ->
-	@shallowDeepEqual(tree)
+chai.use (_, utils) ->
+	Assertion.overwriteProperty 'contain', (_super) ->
+		(contained) ->
+			if utils.flag(this, 'deep')
+				return @shallowDeepEqual
+			_super.call this
+
+
+#Assertion.overwriteMethod 'contain', (_super) ->
+	#(contained) !->
+		##if utils.flag(this, 'deep')
+			##@shallowDeepEqual contained
+		#_super.apply this, arguments
 
 Assertion.addMethod 'beFalse', ->
 	@false
@@ -19,4 +30,3 @@ Assertion.addMethod 'beUndefined', ->
 
 Assertion.addMethod 'beNull', ->
 	@null
-

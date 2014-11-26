@@ -23,8 +23,13 @@ describe 'beUndefined' ->
 	specify 'fails otherwise' ->
 		expect null .not.to.beUndefined()
 
-describe 'containDeep' ->
+describe 'deep.contain' ->
 	specify 'succeeds if actual contains all of expected' ->
-		expect {a: {a: 1}, b: 2} .to.containDeep {a: {a: 1}}
+		expect {a: {a: 1}, b: 2} .to.deep.contain {a: {a: 1}}
 	specify 'fails otherwise' ->
-		expect {} .not.to.containDeep {a: 1}
+		expect {} .not.to.deep.contain {a: 1}
+
+describe 'shallowDeepEqual, and by extension deep.contain,' ->
+	specify 'do not treat "not" flag correctly' ->
+		expect {a: 1} .not.to.shallowDeepEqual {a: 1}
+

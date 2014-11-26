@@ -5,7 +5,7 @@ var tomorrow = require('../_date_helper').tomorrow;
 describe('Event parser parses events', function() {
     it('without extension', function() {
         var tomorrowOneOclock = tomorrow().hour(1).toDate();
-        parser.parse('tomorrow 1:00 foo').should.containDeep({
+        parser.parse('tomorrow 1:00 foo').should.deep.contain({
             start: tomorrowOneOclock,
             end: tomorrowOneOclock,
             isAllDay: false,
@@ -21,15 +21,15 @@ describe('Event parser parses events', function() {
     };
 
     it('with explicit duration', function() {
-        parser.parse('tomorrow 1:00 60min foo').should.containDeep(tomorrowFromOneToTwo);
+        parser.parse('tomorrow 1:00 60min foo').should.deep.contain(tomorrowFromOneToTwo);
     });
 
     it('with explicit end', function() {
-        parser.parse('tomorrow 1:00 to 2:00 foo').should.containDeep(tomorrowFromOneToTwo);
+        parser.parse('tomorrow 1:00 to 2:00 foo').should.deep.contain(tomorrowFromOneToTwo);
     });
 
     it('all-day events', function() {
-        parser.parse('tomorrow foo').should.containDeep({
+        parser.parse('tomorrow foo').should.deep.contain({
             start: tomorrow().toDate(),
             end: tomorrow().toDate(),
             isAllDay: true,
