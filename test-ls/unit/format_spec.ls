@@ -6,11 +6,11 @@ require! {
 
 describe 'Date formatter', ->
     specify 'formats title', ->
-        expect formatForAddEvent {'title': 'foo'} .to.include("-title 'foo'")
+        expect formatForAddEvent {title: 'foo'} .to.include("-title 'foo'")
 
     specify 'formats start', ->
         expect(
-            formatForAddEvent { 'start': moment('2014-01-01 01:01').toDate() }
+            formatForAddEvent { start: moment('2014-01-01 01:01').toDate() }
         ).to.include("-start '2014-01-01 01:01'")
 
 
