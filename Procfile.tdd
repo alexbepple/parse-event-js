@@ -1,3 +1,0 @@
-tdd: make continuously-run-tests
-copy-src: make continuously-copy-src-js
-compile-src: make continuously-compile-src-ls
