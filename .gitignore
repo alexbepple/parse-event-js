@@ -1,7 +1,8 @@
 node_modules/
 npm-debug.log
 
+build/
+
 # Istanbul
-src-instrumented/
 lcov-report/
 lcov.info
