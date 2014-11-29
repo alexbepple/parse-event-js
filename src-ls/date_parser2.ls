@@ -21,7 +21,7 @@ copy = (unit, from, to) ->
     unitAccessor(to, unitAccessor(from))
 
 future = (dateSpec, reference, mutatedMoment) ->
-    if (r.isEmpty(dateSpec) && mutatedMoment === undefined)
+    if (r.isEmpty(dateSpec) && mutatedMoment is undefined)
         return moment.invalid()
 
     reference = reference || moment()
@@ -32,11 +32,11 @@ future = (dateSpec, reference, mutatedMoment) ->
     token = r.head(tokens)
     restOfSpec = m.join(r.tail(tokens))
 
-    if (token.indexOf('tom') === 0)
+    if (token.indexOf('tom') is 0)
         mutatedMoment.add(1, 'day')
         return future(restOfSpec, reference, mutatedMoment)
 
-    if (token === 'eod') then token = '23:59'
+    if (token is 'eod') then token = '23:59'
     if (/^\d{3}$/.test(token)) then token = '0' + token
     timeComponent = moment(token, 'H:mm')
     if (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent))
@@ -72,7 +72,7 @@ specifiesTime = (dateSpec) ->
 
     isTime = (token) ->
         # copied code
-        if (token === 'eod') then token = '23:59'
+        if (token is 'eod') then token = '23:59'
         if (/^\d{3}$/.test(token)) then token = '0' + token
         timeComponent = moment(token, 'H:mm')
         return (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent))

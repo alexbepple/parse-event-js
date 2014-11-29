@@ -4,7 +4,7 @@ require! {
 }
 
 formatDate = (dateSpec) ->
-    if (dateSpec === undefined) then return dateSpec
+    if (dateSpec is undefined) then return dateSpec
     moment(dateSpec).format('YYYY-MM-DD HH:mm')
 
 
