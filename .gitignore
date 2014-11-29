@@ -5,7 +5,3 @@ npm-debug.log
 src-instrumented/
 lcov-report/
 lcov.info
-
-# temporary, while I have both JavaScript & LiveScript
-src/
-test/
