@@ -1,6 +1,6 @@
 s/var //
 s/;//
-s/it(/specify /
+s/\bit\b(/specify /
 s/describe(/describe /
 s/function\s*() {/->/
 s/^\s*})//
