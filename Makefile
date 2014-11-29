@@ -1,13 +1,15 @@
-bin := $(shell npm bin)
-run_tests := $(bin)/mocha --check-leaks --recursive test-ls --compilers ls:LiveScript
-lsc := $(bin)/lsc
-
+src := src
+test := test
 build := build
 src_js := $(build)/src-js
 
+bin := $(shell npm bin)
+run_tests := $(bin)/mocha --check-leaks --recursive $(test) --compilers ls:LiveScript
+lsc := $(bin)/lsc
+
 .PHONY: test
 test:
-	NODE_PATH=src-ls $(run_tests) --reporter mocha-unfunk-reporter
+	NODE_PATH=$(src) $(run_tests) --reporter mocha-unfunk-reporter
 tdd:
 	$(bin)/nodemon --exec 'make test' --ext ls
 
@@ -15,7 +17,7 @@ clean:
 	rm -rf $(build)
 
 compile-src:
-	$(lsc) -bco $(src_js) src-ls
+	$(lsc) -bco $(src_js) $(src)
 
 instrumented := $(build)/src-instrumented
 clean-instrument-src:
