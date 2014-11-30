@@ -21,18 +21,29 @@ copy = (unit, from, to) ->
     unitAccessor(to, unitAccessor(from))
 
 
-parseTime = (token) ->
-    if (token is 'eod') then token = '23:59'
-    if (/^\d{3}$/.test(token)) then token = '0' + token
-    moment(token, 'H:mm')
-isValidTime = (timeComponent) ->
-    !hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)
-setFutureTime = (time, reference, mutatedMoment) ->
-    copy('hours', time, mutatedMoment)
-    copy('minutes', time, mutatedMoment)
-    if !mutatedMoment.isAfter(reference)
-        mutatedMoment.add(1, 'day')
-
+time = {
+    parse: (token) ->
+        if (token is 'eod') then token = '23:59'
+        if (/^\d{3}$/.test(token)) then token = '0' + token
+        moment(token, 'H:mm')
+    isValid: (timeComponent) ->
+        !hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)
+    setFuture: (time, reference, mutatedMoment) ->
+        copy('hours', time, mutatedMoment)
+        copy('minutes', time, mutatedMoment)
+        if !mutatedMoment.isAfter(reference)
+            mutatedMoment.add(1, 'day')
+}
+dayOfMonth = {
+    parse: (token) ->
+        moment(token, 'D')
+    isValid: (date) ->
+        date.isValid() && !hasUnusedInput(date)
+    setFuture: (date, reference, mutatedMoment) ->
+        copy('date', date, mutatedMoment)
+        if (!mutatedMoment.isAfter(reference))
+            mutatedMoment.add(1, 'month')
+}
 
 future = (dateSpec, reference, mutatedMoment) ->
     if (r.isEmpty(dateSpec) && mutatedMoment is undefined)
@@ -50,17 +61,11 @@ future = (dateSpec, reference, mutatedMoment) ->
         mutatedMoment.add 1 \day
         return future(restOfSpec, reference, mutatedMoment)
 
-    parsedTime = parseTime token
-    if isValidTime parsedTime
-        setFutureTime parsedTime, reference, mutatedMoment
-        return future(restOfSpec, reference, mutatedMoment)
-
-    date = moment(token, 'D')
-    if date.isValid() && !hasUnusedInput(date)
-        copy('date', date, mutatedMoment)
-        if (!mutatedMoment.isAfter(reference))
-            mutatedMoment.add(1, 'month')
-        return future(restOfSpec, reference, mutatedMoment)
+    findComponent = r.find -> it.parse token |> it.isValid
+    component = findComponent [time, dayOfMonth]
+    if component
+        component.setFuture (component.parse token), reference, mutatedMoment
+        return future restOfSpec, reference, mutatedMoment
 
     if isMonth token
         mutatedMoment.month(token)
@@ -77,7 +82,7 @@ future = (dateSpec, reference, mutatedMoment) ->
     return moment.invalid()
 
 specifiesTime = (dateSpec) ->
-    isTime = r.pipe parseTime, isValidTime
+    isTime = r.pipe time.parse, time.isValid
     m.split dateSpec |> r.some isTime
 
 module.exports = {
