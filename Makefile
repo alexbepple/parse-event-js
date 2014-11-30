@@ -19,6 +19,9 @@ clean:
 compile-src:
 	$(lsc) -bco $(src_js) $(src)
 
+go: test clean compile-src
+	git add -A :/ && git commit -v
+
 instrumented := $(build)/src-instrumented
 clean-instrument-src:
 	rm -rf $(instrumented)
