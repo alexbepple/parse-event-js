@@ -2,5 +2,5 @@
 
 module.exports = {
 	split: split ' '
-	join: join ' ' 
-};
+	join: join ' '
+}

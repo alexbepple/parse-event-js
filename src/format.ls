@@ -1,6 +1,6 @@
 require! {
     moment
-    'prelude-ls': {unwords}
+    './misc': {join}
 }
 
 formatDate = (date) ->
@@ -13,7 +13,7 @@ formatForAddEvent = (event) ->
         "-end '#{formatDate(event.end)}'"
         "-allDay", event.isAllDay
         "-title '#{event.title}'"
-    unwords parameters
+    join parameters
 
 module.exports = {
     formatForAddEvent
