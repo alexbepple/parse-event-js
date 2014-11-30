@@ -44,6 +44,12 @@ dayOfMonth = {
         if (!mutatedMoment.isAfter(reference))
             mutatedMoment.add(1, 'month')
 }
+tomorrow = {
+    parse: -> it
+    isValid: -> (it.indexOf \tom) is 0
+    setFuture: (_, __, sink) ->
+        sink.add 1 \day
+}
 
 future = (dateSpec, reference, mutatedMoment) ->
     if (r.isEmpty(dateSpec) && mutatedMoment is undefined)
@@ -57,12 +63,8 @@ future = (dateSpec, reference, mutatedMoment) ->
     token = head dateSpecTokens
     restOfSpec = tail dateSpecTokens |> join
 
-    if token.indexOf('tom') is 0
-        mutatedMoment.add 1 \day
-        return future(restOfSpec, reference, mutatedMoment)
-
     findComponent = r.find -> it.parse token |> it.isValid
-    component = findComponent [time, dayOfMonth]
+    component = findComponent [tomorrow, time, dayOfMonth]
     if component
         component.setFuture (component.parse token), reference, mutatedMoment
         return future restOfSpec, reference, mutatedMoment
