@@ -59,9 +59,8 @@ future = (dateSpec, reference, mutatedMoment) ->
     reference = reference || moment()
     mutatedMoment = mutatedMoment || reference.clone().startOf \day
 
-    dateSpecTokens = split dateSpec
-    token = head dateSpecTokens
-    restOfSpec = tail dateSpecTokens |> join
+    [token, ...rest] = split dateSpec
+    restOfSpec = join rest
 
     findComponent = r.find -> it.parse token |> it.isValid
     component = findComponent [tomorrow, time, dayOfMonth]
