@@ -26,29 +26,25 @@ time = {
         if (token is 'eod') then token = '23:59'
         if (/^\d{3}$/.test(token)) then token = '0' + token
         moment(token, 'H:mm')
-    isValid: (timeComponent) ->
-        !hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)
-    setFuture: (time, reference, mutatedMoment) ->
-        copy('hours', time, mutatedMoment)
-        copy('minutes', time, mutatedMoment)
-        if !mutatedMoment.isAfter(reference)
-            mutatedMoment.add(1, 'day')
+    isValid: -> !hasUnusedParsingTokens(it) && !hasUnusedInput(it)
+    setFuture: (sourceMoment, reference, sinkMoment) ->
+        copy('hours', sourceMoment, sinkMoment)
+        copy('minutes', sourceMoment, sinkMoment)
+        if !sinkMoment.isAfter(reference)
+            sinkMoment.add 1, 'day'
 }
 dayOfMonth = {
-    parse: (token) ->
-        moment(token, 'D')
-    isValid: (date) ->
-        date.isValid() && !hasUnusedInput(date)
-    setFuture: (date, reference, mutatedMoment) ->
-        copy('date', date, mutatedMoment)
-        if (!mutatedMoment.isAfter(reference))
-            mutatedMoment.add(1, 'month')
+    parse: -> moment it, 'D'
+    isValid: -> it.isValid() && !hasUnusedInput it
+    setFuture: (sourceMoment, reference, sinkMoment) ->
+        copy('date', sourceMoment, sinkMoment)
+        if !sinkMoment.isAfter(reference)
+            sinkMoment.add(1, 'month')
 }
 tomorrow = {
     parse: -> it
     isValid: -> (it.indexOf \tom) is 0
-    setFuture: (_, __, sink) ->
-        sink.add 1 \day
+    setFuture: (_, __, sinkMoment) -> sinkMoment.add 1 \day
 }
 
 future = (dateSpec, reference, mutatedMoment) ->
