@@ -37,10 +37,10 @@ setFutureTime = (time, reference, mutatedMoment) ->
 future = (dateSpec, reference, mutatedMoment) ->
     if (r.isEmpty(dateSpec) && mutatedMoment is undefined)
         return moment.invalid()
+    if r.isEmpty(dateSpec) then return mutatedMoment
 
     reference = reference || moment()
     mutatedMoment = mutatedMoment || reference.clone().startOf('day')
-    if (r.isEmpty(dateSpec)) then return mutatedMoment
 
     tokens = m.split(dateSpec)
     token = r.head(tokens)
