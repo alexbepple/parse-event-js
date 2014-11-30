@@ -26,7 +26,7 @@ durationInSeconds = (tokens) ->
     if (r.isEmpty(tokens)) then return 0
     juration.parse(m.join(tokens))
 
-parse = (input) ->
+parseEvent = (input) ->
     startMatch = detectDate(input, moment())
     endMatch = detectEnd(startMatch.tail, startMatch.date)
 
@@ -42,6 +42,6 @@ parse = (input) ->
     }
 
 module.exports = {
-    parse
+    parseEvent
 }
 

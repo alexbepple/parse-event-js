@@ -1,5 +1,5 @@
 require! {
-    event_parser: {parse:parseEvent}
+    event_parser: {parseEvent}
 }
 
 describe 'Event parser', ->

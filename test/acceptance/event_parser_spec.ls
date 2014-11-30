@@ -1,5 +1,5 @@
 require! {
-    event_parser: parser
+    event_parser: {parseEvent}
     moment
     '../_date_helper': {tomorrow}
 }
@@ -7,7 +7,7 @@ require! {
 describe 'Event parser parses events' ->
     specify 'without extension' ->
         tomorrowOneOclock = tomorrow().hour(1).toDate()
-        parser.parse 'tomorrow 1:00 foo' .should.deep.contain {
+        parseEvent 'tomorrow 1:00 foo' .should.deep.contain {
             start: tomorrowOneOclock
             end: tomorrowOneOclock
             isAllDay: false
@@ -22,13 +22,13 @@ describe 'Event parser parses events' ->
     }
 
     specify 'with explicit duration' ->
-        parser.parse 'tomorrow 1:00 60min foo' .should.deep.contain tomorrowFromOneToTwo
+        parseEvent 'tomorrow 1:00 60min foo' .should.deep.contain tomorrowFromOneToTwo
 
     specify 'with explicit end' ->
-        parser.parse 'tomorrow 1:00 to 2:00 foo' .should.deep.contain tomorrowFromOneToTwo
+        parseEvent 'tomorrow 1:00 to 2:00 foo' .should.deep.contain tomorrowFromOneToTwo
 
     specify 'all-day events' ->
-        parser.parse 'tomorrow foo' .should.deep.contain {
+        parseEvent 'tomorrow foo' .should.deep.contain {
             start: tomorrow().toDate()
             end: tomorrow().toDate()
             isAllDay: true
