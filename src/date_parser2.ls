@@ -20,12 +20,18 @@ copy = (unit, from, to) ->
     unitAccessor = r.func(unit)
     unitAccessor(to, unitAccessor(from))
 
+
 parseTime = (token) ->
     if (token is 'eod') then token = '23:59'
     if (/^\d{3}$/.test(token)) then token = '0' + token
     moment(token, 'H:mm')
 isValidTime = (timeComponent) ->
     !hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)
+setFutureTime = (time, reference, mutatedMoment) ->
+    copy('hours', time, mutatedMoment)
+    copy('minutes', time, mutatedMoment)
+    if !mutatedMoment.isAfter(reference)
+        mutatedMoment.add(1, 'day')
 
 
 future = (dateSpec, reference, mutatedMoment) ->
@@ -46,10 +52,7 @@ future = (dateSpec, reference, mutatedMoment) ->
 
     parsedTime = parseTime token
     if isValidTime parsedTime
-        copy('hours', parsedTime, mutatedMoment)
-        copy('minutes', parsedTime, mutatedMoment)
-        if !mutatedMoment.isAfter(reference)
-            mutatedMoment.add(1, 'day')
+        setFutureTime parsedTime, reference, mutatedMoment
         return future(restOfSpec, reference, mutatedMoment)
 
     date = moment(token, 'D')
