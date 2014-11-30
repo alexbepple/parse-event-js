@@ -10,6 +10,7 @@
 ## Concrete practices
 
 * Prefer camelCase to hyphen-case. Hyphens create too much visual noise.
+* Prefer Ramda to prelude.ls. Functionally they seem on a par. There is a Dash docset for Ramda. Ramda is more likely to be familiar to JS devs.
 
 
 ## LiveScript
