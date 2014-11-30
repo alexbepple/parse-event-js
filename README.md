@@ -38,7 +38,7 @@ While the functionality may seem similar to other libs/utilities like [Sherlock]
 ## Try it
 
     npm install
-    src/parseEvent.js 'tom 1200 1h Lunch'
+    ./node_modules/.bin/lsc src/parseEvent.ls 'tom 1200 1h Lunch'
 
 
 ## Work with the code
