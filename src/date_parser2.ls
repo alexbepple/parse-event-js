@@ -1,7 +1,7 @@
 require! {
     moment
-    ramda:r
-    './misc':m
+    ramda: {head, tail}:r
+    './misc': {split, join}:m
 }
 
 toLowerCase = r.map(r.func('toLowerCase'))
@@ -40,14 +40,14 @@ future = (dateSpec, reference, mutatedMoment) ->
     if r.isEmpty(dateSpec) then return mutatedMoment
 
     reference = reference || moment()
-    mutatedMoment = mutatedMoment || reference.clone().startOf('day')
+    mutatedMoment = mutatedMoment || reference.clone().startOf \day
 
-    tokens = m.split(dateSpec)
-    token = r.head(tokens)
-    restOfSpec = m.join(r.tail(tokens))
+    dateSpecTokens = split dateSpec
+    token = head dateSpecTokens
+    restOfSpec = tail dateSpecTokens |> join
 
-    if (token.indexOf('tom') is 0)
-        mutatedMoment.add(1, 'day')
+    if token.indexOf('tom') is 0
+        mutatedMoment.add 1 \day
         return future(restOfSpec, reference, mutatedMoment)
 
     parsedTime = parseTime token
@@ -56,19 +56,19 @@ future = (dateSpec, reference, mutatedMoment) ->
         return future(restOfSpec, reference, mutatedMoment)
 
     date = moment(token, 'D')
-    if (date.isValid() && !hasUnusedInput(date))
+    if date.isValid() && !hasUnusedInput(date)
         copy('date', date, mutatedMoment)
         if (!mutatedMoment.isAfter(reference))
             mutatedMoment.add(1, 'month')
         return future(restOfSpec, reference, mutatedMoment)
 
-    if (isMonth(token))
+    if isMonth token
         mutatedMoment.month(token)
         if (!mutatedMoment.isAfter(reference))
             mutatedMoment.add(1, 'year')
         return future(restOfSpec, reference, mutatedMoment)
 
-    if (isWeekday(token))
+    if isWeekday token
         mutatedMoment.day(token)
         if (!mutatedMoment.isAfter(reference))
             mutatedMoment.add(7, 'days')
