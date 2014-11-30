@@ -1,6 +1,6 @@
 #!/usr/bin/env lsc
 
-parse = require('./parse').parse
+parseEvent = require('./event_parser').parse
 format = require('./format').formatForAddEvent
-console.log(format(parse(process.argv[2])))
+console.log format parseEvent process.argv[2]
 

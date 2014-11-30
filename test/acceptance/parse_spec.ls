@@ -1,5 +1,5 @@
 require! {
-    parse: parser
+    event_parser: parser
     moment
     '../_date_helper': {tomorrow}
 }
