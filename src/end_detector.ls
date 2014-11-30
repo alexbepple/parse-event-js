@@ -1,15 +1,15 @@
 require! {
     moment
-    ramda:r
-    './misc':m
+    ramda: {skip, pipe}
+    './misc': {split, join}
 }
 
-endDetector = (detectDate, input, reference) ->
-    skipFirstToken = r.pipe(m.split, r.skip(1), m.join)
-    endMatch = detectDate(skipFirstToken(input), reference)
+detectEnd = (detectDate, input, reference) -->
+    omitFirstToken = pipe split, skip(1), join
+    endMatch = detectDate omitFirstToken(input), reference
     if !endMatch.date.isValid() then endMatch.tail = input
     endMatch
 
 module.exports = {
-    detect-end: r.curry endDetector
+    detectEnd
 }
