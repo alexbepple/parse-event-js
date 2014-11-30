@@ -8,8 +8,8 @@ juration = require('juration/juration')
 Event = require('./event')
 
 dateParser = require('./date_parser2')
-detectDate = require('./date_detector').detect-date(dateParser)
-detectEnd = require('./end_detector').detector(detectDate)
+detectDate = require('./date_detector').detect-date dateParser
+detectEnd = require('./end_detector').detect-end detectDate
 
 
 noOfTokensThatContainDuration = (tokens) ->

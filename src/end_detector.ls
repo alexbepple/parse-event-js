@@ -11,5 +11,5 @@ endDetector = (detectDate, input, reference) ->
     endMatch
 
 module.exports = {
-    detector: r.curry(endDetector)
+    detect-end: r.curry endDetector
 }

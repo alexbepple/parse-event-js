@@ -1,8 +1,8 @@
-moment = require('moment')
-sinon = require('sinon')
-end = require('end_detector')
 require! {
+    moment
+    sinon
     chai: {expect}
+    end_detector: {detect-end}
 }
 
 describe 'End detector', ->
@@ -11,16 +11,16 @@ describe 'End detector', ->
         dateDetectorStub = sinon.stub()
         dateDetectorStub.withArgs('bar', 'reference').returns({date: dateFromDateDetector})
         dateDetectorStub.returns({date: "'wrong input for date detector'"})
-        detectEnd = end.detector(dateDetectorStub)
+        successfullyDetectEnd = detect-end(dateDetectorStub)
 
-        expect detectEnd('foo bar', 'reference').date .to.equal dateFromDateDetector
+        expect successfullyDetectEnd('foo bar', 'reference').date .to.equal dateFromDateDetector
 
     specify 'uses tail of date detector when it finds a date', ->
         resultWithValidDate = {
             date: moment()
             tail: 'tail from date detector'
         }
-        successfullyDetectEnd = end.detector -> resultWithValidDate
+        successfullyDetectEnd = detect-end -> resultWithValidDate
         expect (.tail) successfullyDetectEnd('input', null) .to.equal 'tail from date detector'
 
     specify 'returns the input as the tail when it cannot find a date', ->
@@ -28,7 +28,7 @@ describe 'End detector', ->
             date: moment.invalid()
             tail: 'tail from date detector'
         }
-        failToDetectEnd = end.detector -> dateDetectorResultWithInvalidDate
+        failToDetectEnd = detect-end -> dateDetectorResultWithInvalidDate
 
         expect (.tail) failToDetectEnd('input', null) .to.equal 'input'
 
