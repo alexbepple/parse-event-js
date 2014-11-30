@@ -20,6 +20,14 @@ copy = (unit, from, to) ->
     unitAccessor = r.func(unit)
     unitAccessor(to, unitAccessor(from))
 
+parseTime = (token) ->
+    if (token is 'eod') then token = '23:59'
+    if (/^\d{3}$/.test(token)) then token = '0' + token
+    moment(token, 'H:mm')
+isValidTime = (timeComponent) ->
+    !hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent)
+
+
 future = (dateSpec, reference, mutatedMoment) ->
     if (r.isEmpty(dateSpec) && mutatedMoment is undefined)
         return moment.invalid()
@@ -36,14 +44,12 @@ future = (dateSpec, reference, mutatedMoment) ->
         mutatedMoment.add(1, 'day')
         return future(restOfSpec, reference, mutatedMoment)
 
-    if (token is 'eod') then token = '23:59'
-    if (/^\d{3}$/.test(token)) then token = '0' + token
-    timeComponent = moment(token, 'H:mm')
-    if (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent))
-        copy('hours', timeComponent, mutatedMoment)
-        copy('minutes', timeComponent, mutatedMoment)
-        if (!mutatedMoment.isAfter(reference))
-            mutatedMoment.add(1, 'days')
+    parsedTime = parseTime token
+    if isValidTime parsedTime
+        copy('hours', parsedTime, mutatedMoment)
+        copy('minutes', parsedTime, mutatedMoment)
+        if !mutatedMoment.isAfter(reference)
+            mutatedMoment.add(1, 'day')
         return future(restOfSpec, reference, mutatedMoment)
 
     date = moment(token, 'D')
@@ -68,16 +74,8 @@ future = (dateSpec, reference, mutatedMoment) ->
     return moment.invalid()
 
 specifiesTime = (dateSpec) ->
-    token = dateSpec
-
-    isTime = (token) ->
-        # copied code
-        if (token is 'eod') then token = '23:59'
-        if (/^\d{3}$/.test(token)) then token = '0' + token
-        timeComponent = moment(token, 'H:mm')
-        return (!hasUnusedParsingTokens(timeComponent) && !hasUnusedInput(timeComponent))
-
-    r.some(isTime)(m.split(dateSpec))
+    isTime = r.pipe parseTime, isValidTime
+    m.split dateSpec |> r.some isTime
 
 module.exports = {
     future
