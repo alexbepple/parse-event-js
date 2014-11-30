@@ -2,7 +2,7 @@ require! {
     moment
     sinon
     '../_date_helper': {tomorrow}
-    'date_detector': {detector: detect-date}
+    'date_detector': {detect-date}
 }
 
 describe 'Date detector', ->

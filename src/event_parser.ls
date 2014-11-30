@@ -8,7 +8,7 @@ juration = require('juration/juration')
 Event = require('./event')
 
 dateParser = require('./date_parser2')
-detectDate = require('./date_detector').detector(dateParser)
+detectDate = require('./date_detector').detect-date(dateParser)
 detectEnd = require('./end_detector').detector(detectDate)
 
 

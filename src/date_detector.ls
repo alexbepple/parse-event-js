@@ -4,7 +4,7 @@ require! {
     './misc': m
 }
 
-detector = (dateParser, input, reference) ->
+detect-date = (dateParser, input, reference) ->
     noOfTokensThatContainDate = (tokens) ->
         takeX = (_, idx, array) -> r.take(idx+1, array)
         makeForValidDate = r.pipe(createDateFromTokens, r.func('isValid'))
@@ -23,6 +23,6 @@ detector = (dateParser, input, reference) ->
     }
 
 module.exports = {
-    detector: r.curry detector
+    detect-date: r.curry detect-date
 }
 
