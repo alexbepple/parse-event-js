@@ -58,26 +58,29 @@ weekday = {
         sinkMoment.day(parseResult)
     cycle: 'week'
 }
+fallback = {
+    parse: ->
+    isValid: -> true
+    apply: -> moment.invalid()
+}
 
-future = (dateSpec, reference, mutatedMoment) ->
-    if (r.isEmpty(dateSpec) && mutatedMoment is undefined)
+future = (dateSpec, reference, accumulated) ->
+    if (r.isEmpty(dateSpec) && accumulated is undefined)
         return moment.invalid()
-    if r.isEmpty(dateSpec) then return mutatedMoment
+    if r.isEmpty(dateSpec) then return accumulated
 
     reference = reference || moment()
-    mutatedMoment = mutatedMoment || reference.clone().startOf \day
+    accumulated = accumulated || reference.clone().startOf \day
 
     [token, ...rest] = split dateSpec
     restOfSpec = join rest
 
     findComponent = r.find -> it.parse token |> it.isValid
-    component = findComponent [tomorrow, time, dayOfMonth, month, weekday]
-    if component
-        component.apply (component.parse token), mutatedMoment
-        if !mutatedMoment.isAfter reference then mutatedMoment.add 1, component.cycle
-        return future restOfSpec, reference, mutatedMoment
+    component = findComponent [tomorrow, time, dayOfMonth, month, weekday, fallback]
+    accumulated = component.apply (component.parse token), accumulated
+    if !accumulated.isAfter reference then accumulated.add 1, component.cycle
+    return future restOfSpec, reference, accumulated
 
-    return moment.invalid()
 
 specifiesTime = (dateSpec) ->
     isTime = r.pipe time.parse, time.isValid
