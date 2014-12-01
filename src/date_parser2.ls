@@ -5,13 +5,6 @@ require! {
 }
 
 toLowerCase = r.map(r.func('toLowerCase'))
-allMonths = r.concat(moment.months(), moment.monthsShort())
-allMonthsInLowerCase = toLowerCase(allMonths)
-isMonth = (dateSpec) -> r.contains(dateSpec.toLowerCase())(allMonthsInLowerCase)
-
-allWeekdays = r.concat(moment.weekdays(), moment.weekdaysShort())
-allWeekdaysInLowerCase = toLowerCase(allWeekdays)
-isWeekday = (dateSpec) -> r.contains(dateSpec.toLowerCase())(allWeekdaysInLowerCase)
 
 hasUnusedInput = (moment) -> !r.isEmpty(moment.parsingFlags().unusedInput)
 hasUnusedParsingTokens = (moment) -> !r.isEmpty(moment.parsingFlags().unusedTokens)
@@ -19,7 +12,6 @@ hasUnusedParsingTokens = (moment) -> !r.isEmpty(moment.parsingFlags().unusedToke
 copy = (unit, from, to) ->
     unitAccessor = r.func(unit)
     unitAccessor(to, unitAccessor(from))
-
 
 time = {
     parse: (token) ->
@@ -44,6 +36,10 @@ tomorrow = {
     isValid: -> (it.indexOf \tom) is 0
     apply: (_, sinkMoment) -> sinkMoment.add 1 \day
 }
+
+allMonths = r.concat(moment.months(), moment.monthsShort())
+allMonthsInLowerCase = toLowerCase(allMonths)
+isMonth = (dateSpec) -> r.contains(dateSpec.toLowerCase())(allMonthsInLowerCase)
 month = {
     parse: -> it
     isValid: isMonth
@@ -51,6 +47,10 @@ month = {
         sinkMoment.month(parseResult)
     cycle: 'year'
 }
+
+allWeekdays = r.concat(moment.weekdays(), moment.weekdaysShort())
+allWeekdaysInLowerCase = toLowerCase(allWeekdays)
+isWeekday = (dateSpec) -> r.contains(dateSpec.toLowerCase())(allWeekdaysInLowerCase)
 weekday = {
     parse: -> it
     isValid: isWeekday
@@ -58,6 +58,7 @@ weekday = {
         sinkMoment.day(parseResult)
     cycle: 'week'
 }
+
 fallback = {
     parse: ->
     isValid: -> true
