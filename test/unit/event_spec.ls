@@ -6,6 +6,7 @@ describe 'Event', ->
     startMoment = moment()
     start = startMoment.toDate()
     startClone = startMoment.clone().toDate()
+
     specify 'remembers its start', ->
         Event({start: start}).should.start(startClone)
 
@@ -24,4 +25,11 @@ describe 'Event with start date and duration', ->
 
     specify 'preserves its start date', ->
         event.should.start('2014-01-01 01:01')
+
+describe 'All-day event' ->
+    specify 'ends a day later' ->
+        expect Event {
+            start: moment('2014-01-01 00:00').toDate()
+            isAllDay: true
+        } .to.end '2014-01-02 00:00'
 

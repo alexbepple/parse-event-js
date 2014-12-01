@@ -30,7 +30,6 @@ describe 'Event parser parses events' ->
     specify 'all-day events' ->
         parseEvent 'tomorrow foo' .should.deep.contain {
             start: tomorrow().toDate()
-            end: tomorrow().toDate()
             isAllDay: true
             title: 'foo'
         }
