@@ -27,11 +27,11 @@ time = {
         if (/^\d{3}$/.test(token)) then token = '0' + token
         moment(token, 'H:mm')
     isValid: -> !hasUnusedParsingTokens(it) && !hasUnusedInput(it)
-    setFuture: (sourceMoment, reference, sinkMoment) ->
+    apply: (sourceMoment, sinkMoment) ->
         copy('hours', sourceMoment, sinkMoment)
         copy('minutes', sourceMoment, sinkMoment)
-        if !sinkMoment.isAfter(reference)
-            sinkMoment.add 1, 'day'
+    unitToAdjust: 'day'
+    cycle: 'day'
 }
 dayOfMonth = {
     parse: -> moment it, 'D'
@@ -40,11 +40,15 @@ dayOfMonth = {
         copy('date', sourceMoment, sinkMoment)
         if !sinkMoment.isAfter(reference)
             sinkMoment.add(1, 'month')
+    apply: (sourceMoment, sinkMoment) ->
+        copy('date', sourceMoment, sinkMoment)
+    cycle: 'month'
 }
 tomorrow = {
     parse: -> it
     isValid: -> (it.indexOf \tom) is 0
     setFuture: (_, __, sinkMoment) -> sinkMoment.add 1 \day
+    apply: (_, sinkMoment) -> sinkMoment.add 1 \day
 }
 
 future = (dateSpec, reference, mutatedMoment) ->
@@ -61,7 +65,8 @@ future = (dateSpec, reference, mutatedMoment) ->
     findComponent = r.find -> it.parse token |> it.isValid
     component = findComponent [tomorrow, time, dayOfMonth]
     if component
-        component.setFuture (component.parse token), reference, mutatedMoment
+        component.apply (component.parse token), mutatedMoment
+        if !mutatedMoment.isAfter reference then mutatedMoment.add 1, component.cycle
         return future restOfSpec, reference, mutatedMoment
 
     if isMonth token
