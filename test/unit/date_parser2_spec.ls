@@ -118,6 +118,9 @@ describe 'Date parser: #specifiesTime', ->
     specify 'recognizes a time at beginning', ->
         expect(specifiesTime('00:00')).to.beTrue()
 
+    specify 'recognizes a time in short form', ->
+        expect specifiesTime('0000') .to.beTrue()
+
     specify 'recognizes a time not at beginning', ->
         expect(specifiesTime('tom 00:00')).to.beTrue()
 
