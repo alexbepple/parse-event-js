@@ -1,6 +1,6 @@
 require! {
     moment
-    ramda: {head, tail}:r
+    ramda: r
     './misc': {split, join}:m
 }
 
@@ -30,16 +30,11 @@ time = {
     apply: (sourceMoment, sinkMoment) ->
         copy('hours', sourceMoment, sinkMoment)
         copy('minutes', sourceMoment, sinkMoment)
-    unitToAdjust: 'day'
     cycle: 'day'
 }
 dayOfMonth = {
     parse: -> moment it, 'D'
     isValid: -> it.isValid() && !hasUnusedInput it
-    setFuture: (sourceMoment, reference, sinkMoment) ->
-        copy('date', sourceMoment, sinkMoment)
-        if !sinkMoment.isAfter(reference)
-            sinkMoment.add(1, 'month')
     apply: (sourceMoment, sinkMoment) ->
         copy('date', sourceMoment, sinkMoment)
     cycle: 'month'
@@ -47,8 +42,21 @@ dayOfMonth = {
 tomorrow = {
     parse: -> it
     isValid: -> (it.indexOf \tom) is 0
-    setFuture: (_, __, sinkMoment) -> sinkMoment.add 1 \day
     apply: (_, sinkMoment) -> sinkMoment.add 1 \day
+}
+month = {
+    parse: -> it
+    isValid: isMonth
+    apply: (parseResult, sinkMoment) ->
+        sinkMoment.month(parseResult)
+    cycle: 'year'
+}
+weekday = {
+    parse: -> it
+    isValid: isWeekday
+    apply: (parseResult, sinkMoment) ->
+        sinkMoment.day(parseResult)
+    cycle: 'week'
 }
 
 future = (dateSpec, reference, mutatedMoment) ->
@@ -63,23 +71,11 @@ future = (dateSpec, reference, mutatedMoment) ->
     restOfSpec = join rest
 
     findComponent = r.find -> it.parse token |> it.isValid
-    component = findComponent [tomorrow, time, dayOfMonth]
+    component = findComponent [tomorrow, time, dayOfMonth, month, weekday]
     if component
         component.apply (component.parse token), mutatedMoment
         if !mutatedMoment.isAfter reference then mutatedMoment.add 1, component.cycle
         return future restOfSpec, reference, mutatedMoment
-
-    if isMonth token
-        mutatedMoment.month(token)
-        if (!mutatedMoment.isAfter(reference))
-            mutatedMoment.add(1, 'year')
-        return future(restOfSpec, reference, mutatedMoment)
-
-    if isWeekday token
-        mutatedMoment.day(token)
-        if (!mutatedMoment.isAfter(reference))
-            mutatedMoment.add(7, 'days')
-        return future(restOfSpec, reference, mutatedMoment)
 
     return moment.invalid()
 
