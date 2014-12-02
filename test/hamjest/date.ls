@@ -2,7 +2,7 @@
 format = (moment) ->
     moment.format 'YYYY-MM-DD'
 
-equalsDate = (expected) ->
+equalsCalendarDate = (expected) ->
     matches: (actual) ->
         expected.isSame actual, 'day'
     describeTo: (description) ->
@@ -13,5 +13,5 @@ equalsDate = (expected) ->
             .appendValue format actual
 
 module.exports = {
-    equalsDate
+    equalsCalendarDate
 }

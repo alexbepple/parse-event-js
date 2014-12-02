@@ -1,7 +1,7 @@
 require! {
-    './date': {equalsDate}
+    './date': {equalsCalendarDate}
 }
 
 module.exports = {
-    equalDate: equalsDate
+    equalCalendarDate: equalsCalendarDate
 }
