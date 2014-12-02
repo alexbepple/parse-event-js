@@ -11,7 +11,8 @@
     "codeclimate-test-reporter": "0.0.4",
     "istanbul": "~0.3.2",
     "sinon-chai": "~2.6.0",
-    "sinon": "~1.12.1"
+    "sinon": "~1.12.1",
+    "hamjest": "~2.7.0"
   },
   "dependencies": {
     "ramda": "~0.7.2",
