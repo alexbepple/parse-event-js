@@ -1,6 +1,10 @@
 future = require('date_parser2').future
 specifiesTime = require('date_parser2').specifiesTime
 moment = require('moment')
+require! {
+    '../helpers/hamjest_expect': {expect:demand}
+    '../matchers/hamjest_date_expect': {equalDate}
+}
 
 describe 'Date parser: #future', ->
     specify 'technically creates a Moment.js moment', ->
@@ -58,13 +62,11 @@ describe 'Date parser: #future', ->
 
         specify 'in same week', ->
             monday = moment().day(1)
-            expect future('tue', monday.clone()).date() .to.equal monday.add(1, 'day').date()
-            #demand future('tue', monday) .to equalDate monday.add 1 \day
-            #demand future('tue', monday.clone()) .to equalDate monday.add \1 day
+            demand future('tue', monday.clone()) .to equalDate monday.add 1 \day
 
         specify 'advancing a week for today’s day of week', ->
             monday = moment().day(1)
-            expect(future('mon', monday.clone()).date()).to.equal(monday.add(7, 'days').date())
+            demand future 'mon', monday.clone() .to equalDate monday.add 1 \week
 
 
     describe 'creates date from time', ->
