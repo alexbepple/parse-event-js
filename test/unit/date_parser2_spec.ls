@@ -58,7 +58,9 @@ describe 'Date parser: #future', ->
 
         specify 'in same week', ->
             monday = moment().day(1)
-            expect(future('tue', monday.clone()).date()).to.equal(monday.add(1, 'day').date())
+            expect future('tue', monday.clone()).date() .to.equal monday.add(1, 'day').date()
+            #demand future('tue', monday) .to equalDate monday.add 1 \day
+            #demand future('tue', monday.clone()) .to equalDate monday.add \1 day
 
         specify 'advancing a week for today’s day of week', ->
             monday = moment().day(1)

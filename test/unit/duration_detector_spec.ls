@@ -1,11 +1,6 @@
 require! {
     duration_detector: {detectDuration}
-    hamjest: {assertThat, equalTo, hasProperties:contain}
-}
-
-expect = (actual) -> {
-    to: (matcher) ->
-        assertThat actual, matcher
+    '../helpers/hamjest_expect': {expect, contain}
 }
 
 describe 'Duration detector' ->
