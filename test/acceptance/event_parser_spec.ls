@@ -1,13 +1,13 @@
 require! {
     event_parser: {parseEvent}
-    moment
     '../_date_helper': {tomorrow}
+    '../hamjest/expect': {expect, contain}
 }
 
 describe 'Event parser parses events' ->
     specify 'without extension' ->
         tomorrowOneOclock = tomorrow().hour(1).toDate()
-        parseEvent 'tomorrow 1:00 foo' .should.deep.contain {
+        expect parseEvent 'tomorrow 1:00 foo' .to contain {
             start: tomorrowOneOclock
             end: tomorrowOneOclock
             isAllDay: false
@@ -22,13 +22,15 @@ describe 'Event parser parses events' ->
     }
 
     specify 'with explicit duration' ->
-        parseEvent 'tomorrow 1:00 60min foo' .should.deep.contain tomorrowFromOneToTwo
+        expect parseEvent 'tomorrow 1:00 60min foo'
+            .to contain tomorrowFromOneToTwo
 
     specify 'with explicit end' ->
-        parseEvent 'tomorrow 1:00 to 2:00 foo' .should.deep.contain tomorrowFromOneToTwo
+        expect parseEvent 'tomorrow 1:00 to 2:00 foo'
+            .to contain tomorrowFromOneToTwo
 
     specify 'all-day events' ->
-        parseEvent 'tomorrow foo' .should.deep.contain {
+        expect parseEvent 'tomorrow foo' .to contain {
             start: tomorrow().toDate()
             isAllDay: true
             title: 'foo'
