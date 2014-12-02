@@ -7,7 +7,8 @@ expect = (actual) -> {
 
 module.exports = {
     expect
-    equal: hamjest.equalTo
-    haveProperties: hamjest.hasProperties
     contain: hamjest.hasProperties
+    equal: hamjest.equalTo
+    haveSize: hamjest.hasSize
+    haveProperties: hamjest.hasProperties
 }

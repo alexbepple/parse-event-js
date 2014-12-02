@@ -6,7 +6,9 @@ equalsCalendarDate = (expected) ->
     matches: (actual) ->
         expected.isSame actual, 'day'
     describeTo: (description) ->
-        description.appendValue format expected
+        description
+            .append '    '
+            .appendValue format expected
     describeMismatch: (actual, description) ->
         description
             .append 'was '
