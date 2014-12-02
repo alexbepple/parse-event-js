@@ -1,5 +1,5 @@
 require! {
-    './hamjest_date': {equalsDate}
+    './date': {equalsDate}
 }
 
 module.exports = {

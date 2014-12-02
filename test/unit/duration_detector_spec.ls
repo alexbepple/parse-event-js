@@ -1,6 +1,6 @@
 require! {
     duration_detector: {detectDuration}
-    '../helpers/hamjest_expect': {expect, contain}
+    '../hamjest/expect': {expect, contain}
 }
 
 describe 'Duration detector' ->

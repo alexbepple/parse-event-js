@@ -1,7 +1,7 @@
 require! {
     moment
-    '../helpers/hamjest_expect': {expect}
-    './hamjest_date_expect': {equalDate}
+    './expect': {expect}
+    './date_expect': {equalDate}
     hamjest
 }
 

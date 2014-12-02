@@ -2,8 +2,8 @@ future = require('date_parser2').future
 specifiesTime = require('date_parser2').specifiesTime
 moment = require('moment')
 require! {
-    '../helpers/hamjest_expect': {expect:demand}
-    '../matchers/hamjest_date_expect': {equalDate}
+    '../hamjest/expect': {expect:demand}
+    '../hamjest/date_expect': {equalDate}
 }
 
 describe 'Date parser: #future', ->
