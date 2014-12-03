@@ -14,8 +14,8 @@ parseEvent = (input) ->
     durationMatch = detectDuration endMatch.tail
 
     Event {
-        start: startMatch.date.toDate()
-        end:   endMatch.date.toDate()
+        start: startMatch.date
+        end:   endMatch.date
         durationInSeconds: durationMatch.durationInSeconds
         isAllDay: !dateParser.specifiesTime(input)
         title: durationMatch.tail

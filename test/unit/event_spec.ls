@@ -4,22 +4,23 @@ require! {
 }
 
 describe 'Event' ->
-    start = moment()
-    startClone = start.clone()
+    event = Event {
+        start: moment()
+        end: moment.invalid()
+    }
+    start = event.start.clone()
 
     specify 'remembers its start' ->
-        Event {start: start} .should.start startClone
+        event.should.start start
 
     specify 'disregards an invalid end' ->
-        Event {
-            start: start
-            end: moment.invalid()
-        } .should.end startClone
+        event.should.end start
 
 
 describe 'Event with start date and duration' ->
     event = Event {
         start: moment('2014-01-01 01:01')
+        end: moment.invalid()
         durationInSeconds: 60
     }
 
@@ -34,6 +35,7 @@ describe 'All-day event' ->
     specify 'ends a day later' ->
         expect Event {
             start: moment('2014-01-01 00:00')
+            end: moment.invalid()
             isAllDay: true
         } .to.end '2014-01-02 00:00'
 
