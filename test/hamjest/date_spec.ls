@@ -1,7 +1,7 @@
 require! {
     moment
     './expect': {expect, haveSize}
-    './date_expect': {equalCalendarDate}
+    './date_expect': {equalCalendarDate, equalDateTime}
 }
 
 describe 'equalCalendarDate' ->
@@ -24,6 +24,21 @@ describe 'equalCalendarDate' ->
 
         expect expectedDescription.result()
             .to haveSize actualDescription.result().length
+
+
+describe 'equalDateTime' ->
+    specify 'matches same moment' ->
+        now = moment()
+        expect now .to equalDateTime now
+
+    specify 'matches same moments provided as Date' ->
+        now = moment().toDate()
+        expect now .to equalDateTime now
+
+    specify 'does not match moment with differing seconds' ->
+        midnight = moment '2015-01-01 00:00:00'
+        oneSecondAfterMidnight = moment '2015-01-01 00:00:01'
+        expect midnight .to.not equalDateTime oneSecondAfterMidnight
 
 
 newDescription = ->

@@ -1,14 +1,19 @@
 require! hamjest
 
-expect = (actual) -> {
-    to: (matcher) ->
+expect = (actual) ->
+    to = (matcher) ->
         hamjest.assertThat actual, matcher
-}
+    to.not = (matcher) ->
+        hamjest.assertThat actual, hamjest.not matcher
+    { to }
 
 module.exports = {
     expect
-    contain: hamjest.hasProperties
     equal: hamjest.equalTo
     haveSize: hamjest.hasSize
+
     haveProperties: hamjest.hasProperties
+    contain: hamjest.hasProperties
+
+    containString: hamjest.containsString
 }

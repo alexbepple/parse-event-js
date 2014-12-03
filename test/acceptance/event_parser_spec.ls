@@ -2,21 +2,22 @@ require! {
     event_parser: {parseEvent}
     '../_date_helper': {tomorrow}
     '../hamjest/expect': {expect, contain}
+    '../hamjest/date_expect': {equalDateTime}
 }
 
 describe 'Event parser parses events' ->
     specify 'without extension' ->
-        tomorrowOneOclock = tomorrow().hour(1).toDate()
+        tomorrowOneOclock = tomorrow().hour(1)
         expect parseEvent 'tomorrow 1:00 foo' .to contain {
-            start: tomorrowOneOclock
-            end: tomorrowOneOclock
+            start: equalDateTime tomorrowOneOclock
+            end: equalDateTime tomorrowOneOclock
             isAllDay: false
             title: 'foo'
         }
 
     tomorrowFromOneToTwo = {
-        start: tomorrow().hour(1).toDate()
-        end: tomorrow().hour(2).toDate()
+        start: equalDateTime tomorrow().hour(1)
+        end: equalDateTime tomorrow().hour(2)
         isAllDay: false
         title: 'foo'
     }
@@ -31,7 +32,7 @@ describe 'Event parser parses events' ->
 
     specify 'all-day events' ->
         expect parseEvent 'tomorrow foo' .to contain {
-            start: tomorrow().toDate()
+            start: equalDateTime tomorrow()
             isAllDay: true
             title: 'foo'
         }
