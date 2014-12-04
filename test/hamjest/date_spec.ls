@@ -31,7 +31,7 @@ describe 'equalDateTime' ->
         now = moment()
         expect now .to equalDateTime now
 
-    specify 'matches same moments provided as Date' ->
+    specify 'matches same moment provided as Date' ->
         now = moment().toDate()
         expect now .to equalDateTime now
 

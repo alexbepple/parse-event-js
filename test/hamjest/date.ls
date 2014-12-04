@@ -1,27 +1,24 @@
 require! moment
 
-format = (moment) ->
+formatCalendarDate = (moment) ->
     moment.format 'YYYY-MM-DD'
 
-equalsCalendarDate = (expected) ->
-    matches: (actual) ->
-        expected.isSame actual, 'day'
-    describeTo: (description) ->
-        description
-            .append '    '
-            .appendValue format expected
-    describeMismatch: (actual, description) ->
-        description
-            .append 'was '
-            .appendValue format actual
+equalsMoment = (precision, format) ->
+    (expected) ->
+        matches: (actual) ->
+            moment(expected).isSame actual, precision
+        describeTo: (description) ->
+            description
+                .append '    '
+                .appendValue format expected
+        describeMismatch: (actual, description) ->
+            description
+                .append 'was '
+                .appendValue format actual
 
-equalsDateTime = (expected) ->
-    matches: (actual) ->
-        moment(expected).isSame actual
-    describeTo: (description) ->
-        description.appendValue expected
-    describeMismatch: (actual, description) ->
-        description.appendValue actual
+equalsCalendarDate = equalsMoment \day, formatCalendarDate
+
+equalsDateTime = equalsMoment null, (-> it)
 
 
 module.exports = {
