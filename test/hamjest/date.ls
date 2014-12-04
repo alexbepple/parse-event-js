@@ -9,7 +9,6 @@ equalsMoment = (precision, format) ->
             moment(expected).isSame actual, precision
         describeTo: (description) ->
             description
-                .append '    '
                 .appendValue format expected
         describeMismatch: (actual, description) ->
             description
