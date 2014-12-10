@@ -36,6 +36,15 @@ describe 'All-day event' ->
         expect Event {
             start: moment('2014-01-01 00:00')
             end: moment.invalid()
+            durationInSeconds: 0
             isAllDay: true
         } .to.end '2014-01-02 00:00'
+    describe 'with given duration' ->
+        specify 'ends exactly as determined by duration' ->
+            expect Event {
+                start: moment '2014-01-01 00:00'
+                end: moment.invalid()
+                durationInSeconds: 60
+                isAllDay: true
+            } .to.end '2014-01-01 00:01'
 
