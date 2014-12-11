@@ -9,15 +9,15 @@ describe 'Event parser parses events' ->
     specify 'without extension' ->
         tomorrowOneOclock = tomorrow().hour(1)
         expect parseEvent 'tomorrow 1:00 foo' .to contain {
-            start: tomorrowOneOclock
-            end: tomorrowOneOclock
+            start: equalDateTime tomorrowOneOclock
+            end: equalDateTime tomorrowOneOclock
             isAllDay: false
             title: 'foo'
         }
 
     tomorrowFromOneToTwo = {
-        start: tomorrow().hour(1)
-        end: tomorrow().hour(2)
+        start: equalDateTime tomorrow().hour(1)
+        end: equalDateTime tomorrow().hour(2)
         isAllDay: false
         title: 'foo'
     }
@@ -32,7 +32,7 @@ describe 'Event parser parses events' ->
 
     specify 'all-day events' ->
         expect parseEvent 'tomorrow foo' .to contain {
-            start: tomorrow()
+            start: equalDateTime tomorrow()
             isAllDay: true
             title: 'foo'
         }
