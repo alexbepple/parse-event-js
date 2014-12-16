@@ -9,7 +9,7 @@ lsc := $(bin)/lsc
 
 .PHONY: test
 test:
-	NODE_PATH=$(src) $(run_tests) --reporter mocha-unfunk-reporter
+	NODE_PATH=$(src) $(run_tests) --reporter mocha-unfunk-reporter $(args)
 tdd:
 	$(bin)/nodemon --exec 'make test' --ext ls
 

@@ -1,9 +1,8 @@
-future = require('date_parser2').future
-specifiesTime = require('date_parser2').specifiesTime
-moment = require('moment')
 require! {
+    moment
     '../hamjest/expect': {expect:demand}
-    '../hamjest/date_expect': {equalCalendarDate}
+    '../hamjest/date_expect': {equalCalendarDate, equalDateTime}
+    'date_parser2': {future, specifiesTime}
 }
 
 describe 'Date parser: #future', ->
@@ -98,12 +97,21 @@ describe 'Date parser: #future', ->
             expect(future('01:00 foo')).not.to.be.valid()
 
 
-    describe 'creates date from combination of', ->
-        specify 'day of week + time', ->
-            expect(future('mon 01:00')).to.be.date(future('mon').hour(1).minutes(0))
+    describe 'creates date from combination of' ->
+        describe 'day of week + time' ->
+            specify 'when time given as HH:mm' ->
+                demand future 'mon 01:00' .to equalDateTime (future 'mon' .hour 1 .minutes 0)
+            specify 'when time given as H' ->
+                demand future 'mon 10' .to equalDateTime (future 'mon' .hour 10)
 
-        specify 'date + time', ->
-            expect(future('1 jan 01:00')).to.be.date(future('1 jan').hour(1).minutes(0))
+        describe 'date + time' ->
+            specify 'when time given as HH:mm' ->
+                demand future '1 jan 01:00' .to equalDateTime (future '1 jan' .hour 1 .minutes 0)
+            specify 'when time given as H' ->
+                demand future '1 jan 10' .to equalDateTime (future '1 jan' .hour 10)
+
+        specify "convenience term 'tomorrow' + time given as H" ->
+            demand future 'tom 10' .to equalDateTime (future 'tom' .hour 10)
 
 
     specify 'avoids edge cases of Moment.js date parsing', ->

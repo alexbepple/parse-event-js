@@ -17,6 +17,7 @@ time = {
     parse: (token) ->
         if (token is 'eod') then token = '23:59'
         if (/^\d{3}$/.test(token)) then token = '0' + token
+        if (/^\d{2}$/.test(token)) then token += '00'
         moment(token, 'H:mm')
     isValid: -> !hasUnusedParsingTokens(it) && !hasUnusedInput(it)
     apply: (sourceMoment, sinkMoment) ->
@@ -30,11 +31,13 @@ dayOfMonth = {
     apply: (sourceMoment, sinkMoment) ->
         copy('date', sourceMoment, sinkMoment)
     cycle: 'month'
+    scope: ['day']
 }
 tomorrow = {
     parse: -> it
     isValid: -> (it.indexOf \tom) is 0
     apply: (_, sinkMoment) -> sinkMoment.add 1 \day
+    scope: ['day']
 }
 
 allMonths = r.concat(moment.months(), moment.monthsShort())
@@ -57,6 +60,7 @@ weekday = {
     apply: (parseResult, sinkMoment) ->
         sinkMoment.day(parseResult)
     cycle: 'week'
+    scope: ['day']
 }
 
 fallback = {
@@ -65,22 +69,30 @@ fallback = {
     apply: -> moment.invalid()
 }
 
-future = (dateSpec, reference, accumulated) ->
+future = (dateSpec, reference, accumulated, components) ->
     if (r.isEmpty(dateSpec) && accumulated is undefined)
         return moment.invalid()
     if r.isEmpty(dateSpec) then return accumulated
 
     reference = reference || moment()
     accumulated = accumulated || reference.clone().startOf \day
+    components = components || [tomorrow, dayOfMonth, month, weekday, time, fallback]
 
     [token, ...rest] = split dateSpec
     restOfSpec = join rest
 
-    findComponent = r.find -> it.parse token |> it.isValid
-    component = findComponent [tomorrow, time, dayOfMonth, month, weekday, fallback]
+    componentMatches = -> it.parse token |> it.isValid
+    component = r.find componentMatches, components
     accumulated = component.apply (component.parse token), accumulated
     if !accumulated.isAfter reference then accumulated.add 1, component.cycle
-    return future restOfSpec, reference, accumulated
+
+    satisfiedScope = component.scope || []
+    componentHasRelevantScope = ->
+        scope = it.scope || []
+        r.isEmpty r.intersection satisfiedScope, scope
+    components = r.filter componentHasRelevantScope, components
+
+    return future restOfSpec, reference, accumulated, components
 
 
 specifiesTime = (dateSpec) ->
