@@ -1,5 +1,6 @@
 require! {
     moment
+    hamjest: {assertThat, falsy, truthy}:__
     '../hamjest/expect': {expect:demand}
     '../hamjest/date_expect': {equalCalendarDate, equalDateTime}
     'date_parser2': {future, specifiesTime}
@@ -132,15 +133,8 @@ describe 'Date parser: #future', ->
 
 
 describe 'Date parser: #specifiesTime recognizes', ->
-    specify 'time at beginning', ->
-        expect(specifiesTime('00:00')).to.beTrue()
-
-    specify 'time in short form', ->
-        expect specifiesTime('0000') .to.beTrue()
-
-    specify 'time not at beginning', ->
-        expect(specifiesTime('tom 00:00')).to.beTrue()
-
-    specify 'when no time is specified', ->
-        expect(specifiesTime('')).to.beFalse()
+    specify 'is false when moment is start of day' ->
+        assertThat specifiesTime(future 'tom'), __.is falsy()
+    specify 'is true when moment differs from start of day' ->
+        assertThat specifiesTime(future 'tom 01:00'), __.is truthy()
 

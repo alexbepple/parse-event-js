@@ -17,7 +17,7 @@ parseEvent = (input) ->
         start: startMatch.date
         end:   endMatch.date
         durationInSeconds: durationMatch.durationInSeconds
-        isAllDay: !dateParser.specifiesTime(input)
+        isAllDay: !dateParser.specifiesTime(startMatch.date)
         title: durationMatch.tail
     }
 

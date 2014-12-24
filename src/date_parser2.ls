@@ -98,9 +98,8 @@ future = (dateSpec, reference, accumulated, components) ->
     return future restOfSpec, reference, accumulated, components
 
 
-specifiesTime = (dateSpec) ->
-    isTime = r.pipe time.parse, time.isValid
-    m.split dateSpec |> r.some isTime
+specifiesTime = (aMoment) ->
+    !aMoment.isSame(aMoment.clone().startOf('day'))
 
 module.exports = {
     future
