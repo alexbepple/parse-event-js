@@ -2,17 +2,17 @@
   "private": true,
   "devDependencies": {
     "mocha": "~2.0.1",
-    "chai": "~1.10.0",
     "mocha-unfunk-reporter": "~0.4.0",
-    "nodemon": "~1.2.1",
-    "napa": "~1.1.0",
+    "chai": "~1.10.0",
     "chai-shallow-deep-equal": "~1.0.0",
+    "hamjest": "alexbepple/hamjest",
+    "sinon": "~1.12.2",
+    "sinon-chai": "~2.6.0",
+    "nodemon": "~1.2.1",
+    "istanbul": "~0.3.5",
     "mocha-istanbul": "~0.2.0",
     "codeclimate-test-reporter": "0.0.4",
-    "istanbul": "~0.3.5",
-    "sinon-chai": "~2.6.0",
-    "sinon": "~1.12.2",
-    "hamjest": "alexbepple/hamjest"
+    "napa": "~1.1.0"
   },
   "dependencies": {
     "ramda": "~0.8.0",
