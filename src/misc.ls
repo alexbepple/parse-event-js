@@ -1,6 +1,8 @@
-{split, join} = require 'ramda'
+require! {
+    ramda: r
+}
 
 module.exports = {
-	split: split ' '
-	join: join ' '
+    split: r.split(' ') >> r.flip(r.difference) ['']
+    join: r.join ' '
 }

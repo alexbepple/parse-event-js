@@ -15,10 +15,13 @@ copy = (unit, from, to) ->
 
 time = {
     parse: (token) ->
-        if (token is 'eod') then token = '23:59'
-        if (/^\d{3}$/.test(token)) then token = '0' + token
-        if (/^\d{2}$/.test(token)) then token += '00'
-        moment(token, 'H:mm')
+        parseTime = (token) ->
+            if (token is 'eod')        then return parseTime '23:59'
+            if (/^\d{3}$/.test(token)) then return parseTime '0' + token
+            if token.length <= 2       then return parseTime token + '00'
+            moment(token, 'H:mm')
+
+        parseTime token
     isValid: -> !hasUnusedParsingTokens(it) && !hasUnusedInput(it)
     apply: (sourceMoment, sinkMoment) ->
         copy('hours', sourceMoment, sinkMoment)

@@ -101,8 +101,10 @@ describe 'Date parser: #future', ->
         describe 'day of week + time' ->
             specify 'when time given as HH:mm' ->
                 demand future 'mon 01:00' .to equalDateTime (future 'mon' .hour 1 .minutes 0)
-            specify 'when time given as H' ->
+            specify 'when time given as HH' ->
                 demand future 'mon 10' .to equalDateTime (future 'mon' .hour 10)
+            specify 'when time given as H' ->
+                demand future 'mon 1' .to equalDateTime (future 'mon' .hour 1)
 
         describe 'date + time' ->
             specify 'when time given as HH:mm' ->
@@ -129,16 +131,16 @@ describe 'Date parser: #future', ->
         expect(future('eod')).to.be.date(future('23:59'))
 
 
-describe 'Date parser: #specifiesTime', ->
-    specify 'recognizes a time at beginning', ->
+describe 'Date parser: #specifiesTime recognizes', ->
+    specify 'time at beginning', ->
         expect(specifiesTime('00:00')).to.beTrue()
 
-    specify 'recognizes a time in short form', ->
+    specify 'time in short form', ->
         expect specifiesTime('0000') .to.beTrue()
 
-    specify 'recognizes a time not at beginning', ->
+    specify 'time not at beginning', ->
         expect(specifiesTime('tom 00:00')).to.beTrue()
 
-    specify 'recognizes when no time is specified', ->
+    specify 'when no time is specified', ->
         expect(specifiesTime('')).to.beFalse()
 
