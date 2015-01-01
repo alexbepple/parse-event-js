@@ -1,7 +1,7 @@
 {
   "private": true,
   "devDependencies": {
-    "mocha": "~2.0.1",
+    "mocha": "~2.1.0",
     "mocha-unfunk-reporter": "~0.4.0",
     "chai": "~1.10.0",
     "chai-shallow-deep-equal": "~1.0.0",
