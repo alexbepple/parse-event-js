@@ -131,10 +131,3 @@ describe 'Date parser: #future', ->
     specify "understands convenience term 'eod'", ->
         expect(future('eod')).to.be.date(future('23:59'))
 
-
-describe 'Date parser: #specifiesTime recognizes', ->
-    specify 'is false when moment is start of day' ->
-        assertThat specifiesTime(future 'tom'), __.is falsy()
-    specify 'is true when moment differs from start of day' ->
-        assertThat specifiesTime(future 'tom 01:00'), __.is truthy()
-

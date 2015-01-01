@@ -98,10 +98,6 @@ future = (dateSpec, reference, accumulated, components) ->
     return future restOfSpec, reference, accumulated, components
 
 
-specifiesTime = (aMoment) ->
-    !aMoment.isSame(aMoment.clone().startOf('day'))
-
 module.exports = {
     future
-    specifiesTime
 }
