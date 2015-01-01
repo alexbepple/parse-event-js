@@ -1,10 +1,7 @@
 require! moment
-require! hamjest
 
-formatDateTime = (moment) ->
-    moment.format 'YYYY-MM-DD HH:mm:ss'
-formatCalendarDate = (moment) ->
-    moment.format 'YYYY-MM-DD'
+formatUsing = (formatString) ->
+    (aMoment) -> moment(aMoment).format formatString
 
 equalsMoment = (precision, format) ->
     (expected) ->
@@ -22,13 +19,11 @@ equalsMoment = (precision, format) ->
             actual: format actual
         }
 
-equalsCalendarDate = equalsMoment \day, formatCalendarDate
+equalsCalendarDate = equalsMoment \day, formatUsing 'YYYY-MM-DD'
 
-equalsDateTime = equalsMoment null, formatDateTime
+equalsDateTime = equalsMoment null, formatUsing 'YYYY-MM-DD HH:mm:ss'
 
 module.exports = {
     equalsCalendarDate
     equalsDateTime
-    allDay: -> hamjest.hasProperties {isAllDay: true}
-    notAllDay: -> hamjest.hasProperties {isAllDay: false}
 }

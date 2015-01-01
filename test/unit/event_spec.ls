@@ -1,8 +1,8 @@
 require! {
     moment
     event: Event
-    hamjest: {assertThat, is:_is, not:_not}:_
-    '../hamjest/date': {allDay, notAllDay}
+    hamjest: {assertThat, is:_is}
+    '../hamjest/event': {allDay, notAllDay, starts, ends}
 }
 
 describe 'Event' ->
@@ -13,10 +13,10 @@ describe 'Event' ->
     start = event.start.clone()
 
     specify 'remembers its start' ->
-        event.should.start start
+        assertThat event, starts start
 
     specify 'disregards an invalid end' ->
-        event.should.end start
+        assertThat event, ends start
 
 
 describe 'Event with start date and duration' ->
@@ -27,10 +27,10 @@ describe 'Event with start date and duration' ->
     }
 
     specify 'knows when it ends' ->
-        expect event .to.end '2014-01-01 01:02'
+        assertThat event, ends '2014-01-01 01:02'
 
     specify 'preserves its start date' ->
-        expect event .to.start '2014-01-01 01:01'
+        assertThat event, starts '2014-01-01 01:01'
 
 
 describe 'Event that starts at midnight' ->
@@ -52,15 +52,15 @@ describe 'Event that starts at midnight' ->
 
 describe 'All-day event' ->
     specify 'without duration ends a day later' ->
-        expect Event {
+        assertThat Event({
             start: moment('2014-01-01 00:00')
             end: moment.invalid()
             durationInSeconds: 0
-        } .to.end '2014-01-02 00:00'
+        }), ends '2014-01-02 00:00'
     specify 'with duration ends exactly as determined by duration' ->
-        expect Event {
+        assertThat Event({
             start: moment '2014-01-01 00:00'
             end: moment.invalid()
             durationInSeconds: 60
-        } .to.end '2014-01-01 00:01'
+        }), ends '2014-01-01 00:01'
 
