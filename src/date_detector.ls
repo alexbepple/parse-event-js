@@ -5,21 +5,20 @@ require! {
 }
 
 detectDate = (dateParser, input, reference, options={}) ->
-    noOfTokensThatContainDate = (tokens) ->
-        takeX = (_, idx, array) -> r.take(idx+1, array)
-        makeForValidDate = r.pipe(createDateFromTokens, r.func('isValid'))
-        leadingTokensThatContainDate = r.pipe(
-            r.map.idx(takeX), r.takeWhile(makeForValidDate))
-        leadingTokensThatContainDate(tokens).length
+    tokensThatContainDate = (tokens) ->
+        makeForValidDate = createDate >> (.isValid())
+        prefixesOfTokens = [r.take(x, tokens) for x in [1 to tokens.length]]
+        prefixesThatContainDate = r.takeWhile makeForValidDate, prefixesOfTokens
+        candidates = r.prepend [], prefixesThatContainDate
+        r.last candidates
 
-    createDate = (dateSpec) -> dateParser.future dateSpec, reference, options
-    createDateFromTokens = r.pipe(m.join, createDate)
+    createDate = m.join >> -> dateParser.future(it, reference, options)
 
     tokens = m.split(input)
-    noOfTokensForDate = noOfTokensThatContainDate(tokens)
+    tokensWithDate = tokensThatContainDate(tokens)
     {
-        date: createDateFromTokens r.take(noOfTokensForDate, tokens)
-        tail: m.join(r.skip(noOfTokensForDate, tokens))
+        date: createDate tokensWithDate
+        tail: m.join r.skip(tokensWithDate.length, tokens)
     }
 
 module.exports = {
