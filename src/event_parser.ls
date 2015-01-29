@@ -9,7 +9,7 @@ detectDate = require('./date_detector').detectDate dateParser
 detectEnd = require('./end_detector').detectEnd detectDate
 
 parseEvent = (input) ->
-    startMatch = detectDate input, moment()
+    startMatch = detectDate input, moment(), {}
     endMatch = detectEnd startMatch.tail, startMatch.date
     durationMatch = detectDuration endMatch.tail
 

@@ -1,6 +1,7 @@
 require! {
     moment
     hamjest: {assertThat, falsy, truthy}:__
+    '../hamjest/date': {equalsDateTime}
     '../hamjest/expect': {expect:demand}
     '../hamjest/date_expect': {equalCalendarDate, equalDateTime}
     'date_parser2': {future, specifiesTime}
@@ -116,6 +117,10 @@ describe 'Date parser: #future', ->
         specify "convenience term 'tomorrow' + time given as H" ->
             demand future 'tom 10' .to equalDateTime (future 'tom' .hour 10)
 
+
+    specify 'interprets numbers as times rather than as day of month when asked' ->
+        assertThat future('10', null, findTimeFirst:true),
+            equalsDateTime(future '10:00')
 
     specify 'avoids edge cases of Moment.js date parsing', ->
         expect(future('Novotel')).not.to.be.valid()

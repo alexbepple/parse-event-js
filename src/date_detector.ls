@@ -4,7 +4,7 @@ require! {
     './misc': m
 }
 
-detect-date = (dateParser, input, reference) ->
+detectDate = (dateParser, input, reference, options={}) ->
     noOfTokensThatContainDate = (tokens) ->
         takeX = (_, idx, array) -> r.take(idx+1, array)
         makeForValidDate = r.pipe(createDateFromTokens, r.func('isValid'))
@@ -12,7 +12,7 @@ detect-date = (dateParser, input, reference) ->
             r.map.idx(takeX), r.takeWhile(makeForValidDate))
         leadingTokensThatContainDate(tokens).length
 
-    createDate = (dateSpec) -> dateParser.future(dateSpec, reference)
+    createDate = (dateSpec) -> dateParser.future dateSpec, reference, options
     createDateFromTokens = r.pipe(m.join, createDate)
 
     tokens = m.split(input)
@@ -23,6 +23,6 @@ detect-date = (dateParser, input, reference) ->
     }
 
 module.exports = {
-    detect-date: r.curry detect-date
+    detectDate: r.curry detectDate
 }
 

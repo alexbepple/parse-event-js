@@ -72,14 +72,19 @@ fallback = {
     apply: -> moment.invalid()
 }
 
-future = (dateSpec, reference, accumulated, components) ->
+startingComponents = (options) ->
+    if options.findTimeFirst
+        return [time, tomorrow, dayOfMonth, month, weekday, fallback]
+    return [tomorrow, dayOfMonth, month, weekday, time, fallback]
+
+future = (dateSpec, reference, options={}, accumulated, components) ->
     if (r.isEmpty(dateSpec) && accumulated is undefined)
         return moment.invalid()
     if r.isEmpty(dateSpec) then return accumulated
 
     reference = reference || moment()
     accumulated = accumulated || reference.clone().startOf \day
-    components = components || [tomorrow, dayOfMonth, month, weekday, time, fallback]
+    components = components || startingComponents(options)
 
     [token, ...rest] = split dateSpec
     restOfSpec = join rest
@@ -95,7 +100,7 @@ future = (dateSpec, reference, accumulated, components) ->
         r.isEmpty r.intersection satisfiedScope, scope
     components = r.filter componentHasRelevantScope, components
 
-    return future restOfSpec, reference, accumulated, components
+    return future restOfSpec, reference, options, accumulated, components
 
 
 module.exports = {
