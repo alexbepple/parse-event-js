@@ -10,8 +10,9 @@ hasUnusedInput = (moment) -> !r.isEmpty(moment.parsingFlags().unusedInput)
 hasUnusedParsingTokens = (moment) -> !r.isEmpty(moment.parsingFlags().unusedTokens)
 
 copy = (unit, source, sink) ->
-    sourceValue = r.invoke(unit, [], source)
-    r.invoke(unit, [sourceValue], sink)
+    get = r.invoker(0, unit)
+    set = r.invoker(1, unit)
+    set(get(source), sink)
 
 time = {
     parse: (token) ->
