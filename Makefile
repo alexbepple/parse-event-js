@@ -2,7 +2,7 @@ src := src
 test := test
 
 bin := $(shell npm bin)
-run_tests := $(bin)/mocha --check-leaks --recursive $(test) --compilers ls:LiveScript
+run_tests := $(bin)/mocha --check-leaks --recursive $(test) --compilers ls:livescript
 
 .PHONY: test
 test:
