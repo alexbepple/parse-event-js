@@ -23,7 +23,7 @@ detectDuration = (input) ->
     noOfTokensForDuration = noOfTokensThatContainDuration(tokens)
     {
         durationInSeconds: durationInSeconds(r.take(noOfTokensForDuration, tokens))
-        tail: m.join(r.skip(noOfTokensForDuration, tokens))
+        tail: m.join(r.drop(noOfTokensForDuration, tokens))
     }
 
 module.exports = {

@@ -18,7 +18,7 @@ detectDate = (dateParser, input, reference, options={}) ->
     tokensWithDate = tokensThatContainDate(tokens)
     {
         date: createDate tokensWithDate
-        tail: m.join r.skip(tokensWithDate.length, tokens)
+        tail: m.join r.drop(tokensWithDate.length, tokens)
     }
 
 module.exports = {
