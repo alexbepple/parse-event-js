@@ -4,14 +4,14 @@ require! {
     './misc': {split, join}:m
 }
 
-toLowerCase = r.map(r.func('toLowerCase'))
+toLowerCase = r.map(r.toLower)
 
 hasUnusedInput = (moment) -> !r.isEmpty(moment.parsingFlags().unusedInput)
 hasUnusedParsingTokens = (moment) -> !r.isEmpty(moment.parsingFlags().unusedTokens)
 
-copy = (unit, from, to) ->
-    unitAccessor = r.func(unit)
-    unitAccessor(to, unitAccessor(from))
+copy = (unit, source, sink) ->
+    sourceValue = r.invoke(unit, [], source)
+    r.invoke(unit, [sourceValue], sink)
 
 time = {
     parse: (token) ->
